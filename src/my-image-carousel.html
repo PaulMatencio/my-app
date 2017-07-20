@@ -1,0 +1,387 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!-- Load the Polymer.Element base class -->
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../bower_components/paper-slider/paper-slider.html">
+<link rel="import" href="icon-toggle.html">
+<!--link rel="import" href="/bower_components/polymer/lib/utils/flattened-nodes-observer.html"-->
+<!--link rel="import" href="bower_components/polymer/lib/elements/dom-repeat.html"-->
+<link rel="import" href="my-mixin.html">
+
+<dom-module id="my-image-carousel">
+  <template>
+
+    <!-- Styles MUST be inside template -->
+    <style>
+
+      :host {
+        display: block;
+        position: relative;
+        overflow: hidden;
+      }
+
+
+      /**
+       * In a shadow root, the :host CSS selector refers to the host of the
+       * shadow root (i.e. the <my-carousel> element), and the :slotted() selector
+       * refers to the immediate children that are in that slot.
+       * Though this is not required with the native implementation, one of
+       * the limitations of the Shady DOM polyfill is that you must have a selector
+       * to the left of ::slotted(). In this case, we will use div > ::slotted().
+      */
+
+      /* slot replace content */
+      div > ::slotted(:not([selected])) {
+        display: none;
+      }
+      button {
+        position: absolute;
+        top: calc(50% - 20px);
+        padding: 0;
+        line-height: 40px;
+        border: none;
+        background: none;
+        color: #DDD;
+        font-size: 40px;
+        font-weight: bold;
+        opacity: 0.7;
+      }
+
+      button:hover,
+      button:focus {
+        opacity: 1;
+      }
+
+      #prevBtn {
+        left: calc(var(--iron-icon-width, 24px)/2);
+      }
+
+      #nextBtn {
+        right: calc(var(--iron-icon-width, 24px)/2);
+      }
+      /*  NAVIGATION ICONS */
+      .navigation-icons {
+        @apply --layout;
+        @apply --layout-center;
+        display: inline-flex;
+        position: absolute;
+        height: calc(var(--iron-icon-height, 24px) + 5px);
+        background: var(--image-carousel-navigation-icon-color, rgba(255, 255, 255, 1));
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                    0 1px 5px 0 rgba(0, 0, 0, 0.12),
+                    0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 25%;
+        background-color:  white;
+        cursor: pointer;
+        @apply --navigation-icon-mixin;
+      }
+
+      .navigation-icons:hover {
+        box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+                    0 1px 10px 0 rgba(0, 0, 0, 0.12),
+                    0 2px 4px -1px rgba(0, 0, 0, 0.4);
+        @apply --navigation-icon-hover-mixin;
+      }
+
+      .navigation-icons[hidden] {
+        visibility: hidden;
+      }
+
+      .left-icon {
+        left: calc(var(--iron-icon-width, 24px)/-2);
+        fill: var(--iron-icon-fill-color, currentcolor);
+        @apply --left-navigation-icon-mixin;
+      }
+
+      .right-icon {
+        right: calc(var(--iron-icon-width, 24px)/-2);
+        fill: var(--iron-icon-fill-color, currentcolor);
+        @apply --right-navigation-icon-mixin;
+      }
+
+      .first-icon {
+        left: calc(50% - var(--iron-icon-width)*2 - (var(--iron-icon-width) / 4 ));
+        bottom: calc(var(--iron-icon-width, 24px));
+        @apply --left-navigation-icon-mixin;
+      }
+
+      .bar-icon {
+        padding: calc(var(--iron-icon-width) / 4);
+      }
+
+      .toggle-icon{
+        right: calc(var(--iron-icon-width,24px));
+        bottom:  calc(var(--iron-icon-width, 24px));
+      }
+
+      .info {
+        position: absolute;
+        display: inline-flex;
+        left:  calc(var(--iron-icon-width,24px));
+        top: calc(var(--iron-icon-width, 24px)/2);
+        font-size: 15px;
+        padding: 0;
+        margin: 0;
+      }
+      .pinfo {
+        margin : 0;  
+      }
+      button[disabled] {
+        opacity: 0.3;
+        color: red;
+      }
+
+    </style>
+    <div>
+      <slot>></slot>
+    </div>
+    <!--dom-if if="[[!autoscroll]]">
+      <template-->
+        <button id="prevBtn" on-click="previous_image">&#x276E;</button>
+        <button id="nextBtn" on-click="next_image">&#x276F;</button>
+    <!--/template>
+    <dom-if-->
+
+    <dom-if if="[[actions_bar]]">
+      <template>
+        <!--button id="first" class="reset" on-click="first">&#x276E;&#x276E;</button>
+        <button id="increase" class="reset" on-click="increase"><span></span>+</button>
+        <button id="decrease" class="reset" on-click="decrease"><span></span>-</button>
+        <button id="last" class="reset" on-click="last">&#x276F;&#x276F;</button-->
+        <div class="info">
+          <p class="pinfo"> {{ _title }} </p>
+          <dom-if if="[[autoscroll]]">
+            <template>
+              <paper-slider value="{{int}}" max="[[max]]" step="[[_step]]" max-marker="40" on-tap="set_interval" ></paper-slider>
+              <p  class="pinfo"> {{int}} ms</p>
+            </template>
+          </dom-if>
+        </div>
+
+        <!--icon-toggle id="stop" class="navigation-icons toggle" toggle-icon="star" hidden$="[[!autoscroll]]"></icon-toggle>
+        <icon-toggle id="stop" class="navigation-icons toggle" toggle-icon="star" hidden$="[[autoscroll]]"></icon-toggle-->
+        <icon-toggle id="stop" class="navigation-icons toggle-icon" toggle-icon="arrow-forward" pressed="{{autoscroll}}"></icon-toggle>
+        <div class= "navigation-icons  first-icon">
+            <iron-icon icon="av:fast-rewind" class="bar-icon"  on-click="first_image"></iron-icon>
+            <iron-icon icon="add-circle" class="bar-icon" hidden$="[[!autoscroll]]" on-click="increase_interval"  ></iron-icon>
+            <iron-icon icon="remove-circle" class="bar-icon" hidden$="[[!autoscroll]]" on-click="decrease_interval"></iron-icon>
+            <iron-icon icon="av:fast-forward" class="bar-icon" on-click="last_image"></iron-icon>
+        </div>
+      </template>
+    <dom-if>
+
+</template>
+  <script>
+    /** Extend Polymer.Element base class
+     *  class MyCarousel extends Polymer.Element
+     */
+    class MyImageCarousel extends MyMixin(Polymer.Element)   {
+      static get is() { return 'my-image-carousel' }
+      constructor() {
+        super();
+      }
+
+      ready() {
+        super.ready();
+        if (this.appendImage) {
+          for (var i = 0; i < this.images.length; i++) {
+              var img  = document.createElement("img");
+              img.setAttribute('data-src', this.hosts + this.images[i] );
+              this.appendChild(img);;
+            }
+        } ;
+
+        /**
+          callback this._installListeners.bind(this)
+        */
+        requestAnimationFrame(this._installListeners.bind(this));
+      }
+
+      _selectedChanged(selected , oldSelected ) {
+          super._selectedChanged(selected, oldSelected);
+          /**
+            * Polymer builds a static map of node IDs, this.$, that allows you to
+            * quickly access elements in the <template> with the corresponding id.
+            * For more details,
+            * see https://www.polymer-project.org/2.0/docs/devguide/dom-template#node-finding.
+          */
+          if (selected) {
+
+            var paths =  selected.src.split("/") ;
+            this._title = paths[paths.length -1];
+
+            var previous = selected.previousElementSibling;
+            var next = selected.nextElementSibling;
+            /*
+            * this.$.prevBtn.disabled = !selected.previousElementSibling;
+            * this.$.nextBtn.disabled = !selected.nextElementSibling;
+            */
+            this.$.prevBtn.disabled = !previous ;
+            this.$.nextBtn.disabled = !next;
+            /* lazy-load images */
+            this._loadImage(selected);
+            this._loadImage(previous);
+            this._loadImage(next);
+
+          } else {
+              this.$.prevBtn.disabled = true;
+              this.$.nextBtn.disabled = true;
+          }
+        }
+
+        /* Lazy-load images */
+
+      _loadImage(img) {
+        // console.log(img)
+        if (img && !img.src) {
+        img.src = img.getAttribute('data-src');
+        }
+      }
+
+      /* adding transition */
+      _translateX(elem, x, transition) {
+        elem.style.display = 'block';
+        elem.style.transition = transition ? 'transform 0.2s' : '';
+        //elem.style.transition = transition ? 'transform' + this.transition+'s' : '';
+        elem.style.transform = 'translate3d(' + x + 'px, 0, 0)';
+      }
+
+      _installListeners() {
+        this.addEventListener('transitionend', this._resetChildrenStyles.bind(this));
+      }
+
+
+      /**
+      * The _resetChildrenStyles() method will clear the style attributes that
+      * were set by our element. Now we have a carousel that transitions
+       between images:
+      */
+      _resetChildrenStyles() {
+
+        let elem = this.firstElementChild;
+        while (elem) {
+          elem.style.display = '';
+          elem.style.transition = '';
+          elem.style.transform = '';
+          elem = elem.nextElementSibling;
+        }
+      }
+      /**
+      * define two methods, previous() and next(), that will change the selected
+      * image. These methods will become part of the element's public API,
+      * so they don't start with underscores
+      */
+
+      previous_image() {
+        const elem = this.selected && this.selected.previousElementSibling;
+        if (elem) {
+          // Setup transition start state
+          const oldSelected = this.selected;
+          this._translateX(oldSelected, 0);
+          this._translateX(elem, -this.offsetWidth);
+          // star the transition
+          this.selected = elem;
+          this._translateX(oldSelected, this.offsetWidth, true /* transition */);
+          this._translateX(elem, 0, true /* transition */);
+        } else {
+          /*
+          var last  = this.lastElementChild;
+          this.selected = last;
+          this._translateX(last, 0, true /* transition );
+          */
+          this.last_image();
+        }
+      }
+
+      next_image() {
+        const elem = this.selected && this.selected.nextElementSibling;
+        if (elem) {
+          // Setup transition start state
+          const oldSelected = this.selected;
+          this._translateX(oldSelected, 0);
+          this._translateX(elem, this.offsetWidth);
+          // star the transition
+          this.selected = elem;
+
+          this._translateX(oldSelected,-this.offsetWidth,this.transition);
+          this._translateX(elem, 0, this.transition);
+
+          this._translateX(oldSelected,-this.offsetWidth);
+          this._translateX(elem, 0);
+
+        } else {
+          /*
+          var first = this.firstElementChild;
+          this.selected = first;
+          this._translateX(first, 0, true /* transition );
+          */
+          this.first_image()
+        }
+      }
+
+      /**
+      * define two methods, first() and last(), that will jump to the first
+      * element or the last element of the caroussel
+      */
+
+      first_image() {
+        const elem = this.selected ;
+        // this._translateX(elem, 0);
+        this._translateX(elem, this.offsetWidth,true);
+        var first = this.firstElementChild;
+        this.selected = first;
+        this._translateX(first, 0, true /* transition */);
+      }
+
+      last_image() {
+        const elem = this.selected ;
+        // this._translateX(elem, 0);
+        this._translateX(elem, -this.offsetWidth,true);
+        var last = this.lastElementChild;
+        this.selected = last;
+        this._translateX(last, 0, true /* transition */);
+      }
+
+      increase_interval() {
+        this.int += this._step;
+        if (this.intl > this.max) {
+          this.int = this.max;
+        }
+        console.log(this.int);
+        this._autoScroll();
+      }
+
+      decrease_interval() {
+        this.int -= this._step;
+        if (this.int < this._step) {
+          this.int = this._step;
+        }
+        this._autoScroll();
+        // console.log(this.interval);
+      }
+      set_interval() {
+        console.log(this.int) ;
+        if (this.int < this._step) {
+          this.int = this._step;
+        }
+        this._autoScroll();
+      }
+    }
+
+    // Register custom element definition using standard platform API
+    customElements.define(MyImageCarousel.is, MyImageCarousel);
+
+  </script>
+</dom-module>

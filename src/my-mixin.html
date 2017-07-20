@@ -1,0 +1,161 @@
+<script>
+const MyMixin = superclass => class extends superclass {
+
+  static get properties() {
+    return {
+      /**
+      * Currently selected
+      */
+      selected: {
+        type: Object,
+        observer: '_selectedChanged'
+      },
+      _title: {
+        type: String,
+        notify: true,
+        reflectToAttribute: true
+      },
+      /**
+       * Boolean value to decide if images should change automatically.
+       */
+      autoscroll: {
+        type: Boolean,
+        value: false,
+        notify: true,
+        reflectToAttribute: true,
+        observer: '_autoScroll'
+      },
+
+      hosts: {
+        type: String,
+        /* value: "https://app-layout-assets.appspot.com/", */
+        value: "../images/png/",
+        notify: true,
+        reflectToAttribute: true
+      },
+
+      images: {
+        type : Array,
+        /* value: function() { return ["assets/bg1.jpg","assets/bg2.jpg","assets/bg3.jpg","assets/bg4.jpg"];
+        }  */
+        value: function() {
+          return ["JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
+          "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png","NL1010536C2p17.png","NL1010536C2p9.png"];
+        }
+      },
+
+      /**
+          Thsi work with images
+      */
+      appendImage: {
+        type: Boolean,
+        value: true,
+        notify: true
+      }
+      ,
+      /**
+       * Transition ( animation) between images
+       * default off  for scrolling forward
+       */
+      transition: {
+        type: Boolean,
+        value: false,
+        notify: true,
+        reflectToAttribute: true
+      },
+
+      /**
+       * Time after which image should change.
+       * This will only work if autoscroll is set to true
+       */
+      int: {
+        type: Number,
+        value: 1000,
+        notify: true,
+        reflectToAttribute: true
+      },
+
+      /**
+       * Max Time which image should change
+       * This will only work if autoscroll is set to true
+       */
+      max: {
+        type: Number,
+        value: 10000,
+        notify: true,
+        reflectToAttribute: true
+      },
+      /**
+       *  step of interval increase
+       * This will only work if autoscroll is set to true
+       */
+      _step: {
+        type: Number,
+        readOnly: true,
+        value: 250
+      },
+
+      /**
+       * use to save the current interval
+       *
+       */
+
+      _currentInterval: {
+        type: Object,
+      },
+
+      /**
+       * used to display the action bar
+       * This will only work if autoscroll is set to true
+       */
+      actions_bar: {
+        type: Boolean,
+        /* notify: true, */
+        value: false
+        /* reflectToAttribute: true */
+      }
+    };
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    /**  Use _resetSelected() method inside connectedCallback().
+     * Also call this method on slotchange so that we can update the
+     * carousel if child elements are added or removed.
+    */
+    this.shadowRoot.addEventListener('slotchange', this._resetSelected.bind(this));
+    this._resetSelected();
+  }
+
+  _selectedChanged(selected, oldSelected) {
+    if (oldSelected) oldSelected.removeAttribute('selected');
+    if (selected) selected.setAttribute('selected', '');
+  }
+
+  /** define the _resetSelected() method that will set the
+    *selected attribute on the first element child
+  */
+  _resetSelected() {
+  /** if there is already a selected child element, don't modify it unless
+    * it is no longer a child of the carousel
+  */
+    if (!this.selected || this.selected.parentElement !== this) {
+      this.selected = this.firstElementChild;
+    }
+  }
+
+  _autoScroll() {
+    if ( typeof(this.currentInterval)  != undefined ) {
+      clearInterval(this.currentInterval)
+    }
+    if (this.autoscroll) {
+      this.currentInterval = setInterval(_ => this.next_image(), this.int);
+      console.log(this.currentInterval);
+    }
+  }
+};
+
+function  _getImages() {
+   return  ["assets/bg1.jpg","assets/bg2.jpg","assets/bg3.jpg","assets/bg4.jpg"];
+}
+</script>
