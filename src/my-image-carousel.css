@@ -1,0 +1,36 @@
+<!-- personalized  style -->
+<style>
+
+  my-image-carousel {
+    width: 100%;
+    contain: content;
+  }
+
+  my-image-carousel::after {
+    display: block;
+    content: '';
+    padding-top: 75%; /* 4:3 = height is 75% of width */
+  }
+
+  my-image-carousel img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  my-image-carousel  .navigation-icons {
+    @apply --layout;
+    @apply --layout-center;
+    display: inline-flex;
+    position: absolute;
+    height: calc(var(--iron-icon-height, 24px) + 5px);
+    background: var(--image-carousel-navigation-icon-color, rgba(255, 255, 255, 1));
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                0 1px 5px 0 rgba(0, 0, 0, 0.12),
+                0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 25%;
+    background-color:  white;
+    cursor: pointer;
+  }
+</style>

@@ -11,9 +11,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <!-- Load the Polymer.Element base class -->
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../bower_components/paper-slider/paper-slider.html">
+
 <link rel="import" href="icon-toggle.html">
 <!--link rel="import" href="/bower_components/polymer/lib/utils/flattened-nodes-observer.html"-->
 <!--link rel="import" href="bower_components/polymer/lib/elements/dom-repeat.html"-->
@@ -55,7 +57,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: #DDD;
         font-size: 40px;
         font-weight: bold;
-        opacity: 0.7;
+        opacity: 0.9;
       }
 
       button:hover,
@@ -131,13 +133,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: inline-flex;
         left:  calc(var(--iron-icon-width,24px));
         top: calc(var(--iron-icon-width, 24px)/2);
-        font-size: 15px;
+        font-size: 14px;
         padding: 0;
         margin: 0;
       }
-      .pinfo {
-        margin : 0;  
+
+      .download {
+        position: absolute;
+        display: inline-block;
+        left:  70%;
+        top: calc(var(--iron-icon-width, 24px)/2);
+        font-size: 14px;
+        padding: 0;
+        margin: 0;
       }
+
       button[disabled] {
         opacity: 0.3;
         color: red;
@@ -149,34 +159,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </div>
     <!--dom-if if="[[!autoscroll]]">
       <template-->
-        <button id="prevBtn" on-click="previous_image">&#x276E;</button>
-        <button id="nextBtn" on-click="next_image">&#x276F;</button>
+    <button id="prevBtn" on-click="previous_image">&#x276E;</button>
+    <button id="nextBtn" on-click="next_image">&#x276F;</button>
     <!--/template>
     <dom-if-->
 
-    <dom-if if="[[actions_bar]]">
+    <dom-if if="[[actions]]">
       <template>
-        <!--button id="first" class="reset" on-click="first">&#x276E;&#x276E;</button>
-        <button id="increase" class="reset" on-click="increase"><span></span>+</button>
-        <button id="decrease" class="reset" on-click="decrease"><span></span>-</button>
-        <button id="last" class="reset" on-click="last">&#x276F;&#x276F;</button-->
         <div class="info">
-          <p class="pinfo"> {{ _title }} </p>
+          <p> {{ _title }} </p>
           <dom-if if="[[autoscroll]]">
             <template>
               <paper-slider value="{{int}}" max="[[max]]" step="[[_step]]" max-marker="40" on-tap="set_interval" ></paper-slider>
-              <p  class="pinfo"> {{int}} ms</p>
+              <p >{{int}} ms</p>
             </template>
           </dom-if>
         </div>
 
-        <!--icon-toggle id="stop" class="navigation-icons toggle" toggle-icon="star" hidden$="[[!autoscroll]]"></icon-toggle>
-        <icon-toggle id="stop" class="navigation-icons toggle" toggle-icon="star" hidden$="[[autoscroll]]"></icon-toggle-->
+        <div  id="download" class="download">
+          <template is="dom-repeat" items="[[Images]]">
+            <a href = "[[item]]" download hidden$="[[autoscroll]]">
+              <img border="1" src="[[item]]" alt="png" width="60" height="60">
+            </a>
+          </template>
+        </div>
+
         <icon-toggle id="stop" class="navigation-icons toggle-icon" toggle-icon="arrow-forward" pressed="{{autoscroll}}"></icon-toggle>
         <div class= "navigation-icons  first-icon">
             <iron-icon icon="av:fast-rewind" class="bar-icon"  on-click="first_image"></iron-icon>
             <iron-icon icon="add-circle" class="bar-icon" hidden$="[[!autoscroll]]" on-click="increase_interval"  ></iron-icon>
             <iron-icon icon="remove-circle" class="bar-icon" hidden$="[[!autoscroll]]" on-click="decrease_interval"></iron-icon>
+            <iron-icon icon="av:add-to-queue" class="bar-icon" hidden$="[[autoscroll]]" on-click="add_to_queue"></iron-icon>
+            <iron-icon icon="av:remove-from-queue" class="bar-icon" hidden$="[[autoscroll]]" on-click="remove_from_queue"></iron-icon>
+            <iron-icon icon="file-download" class="bar-icon" hidden$="[[autoscroll]]" on-click="download_images"></iron-icon>
             <iron-icon icon="av:fast-forward" class="bar-icon" on-click="last_image"></iron-icon>
         </div>
       </template>
@@ -195,14 +210,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       ready() {
         super.ready();
-        if (this.appendImage) {
-          for (var i = 0; i < this.images.length; i++) {
-              var img  = document.createElement("img");
-              img.setAttribute('data-src', this.hosts + this.images[i] );
-              this.appendChild(img);;
-            }
-        } ;
-
+        if (this.appendimage) {
+          // this is required since _appendImage is a private method
+          this._appendImage(this.images);
+        }
         /**
           callback this._installListeners.bind(this)
         */
@@ -241,6 +252,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         }
 
+       /**
+       *   append the array of images to the parent element
+       *   The parent  element (this) is the image-carousel
+       */
+      _appendImage(images) {
+        images.forEach( function(image){
+          var img  = document.createElement("img");
+          img.setAttribute('data-src', this.hosts + image );
+          this.appendChild(img);
+        },this);
+      }
         /* Lazy-load images */
 
       _loadImage(img) {
@@ -252,16 +274,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       /* adding transition */
       _translateX(elem, x, transition) {
-        elem.style.display = 'block';
-        elem.style.transition = transition ? 'transform 0.2s' : '';
-        //elem.style.transition = transition ? 'transform' + this.transition+'s' : '';
-        elem.style.transform = 'translate3d(' + x + 'px, 0, 0)';
+        if ( elem != undefined ) {
+          elem.style.display = 'block';
+          elem.style.transition = transition ? 'transform 0.2s' : '';
+          //elem.style.transition = transition ? 'transform' + this.transition+'s' : '';
+          elem.style.transform = 'translate3d(' + x + 'px, 0, 0)';
+        }
       }
 
+      /* set by requestAnimationFrame */
       _installListeners() {
         this.addEventListener('transitionend', this._resetChildrenStyles.bind(this));
       }
-
 
       /**
       * The _resetChildrenStyles() method will clear the style attributes that
@@ -269,7 +293,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        between images:
       */
       _resetChildrenStyles() {
-
         let elem = this.firstElementChild;
         while (elem) {
           elem.style.display = '';
@@ -278,6 +301,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           elem = elem.nextElementSibling;
         }
       }
+
       /**
       * define two methods, previous() and next(), that will change the selected
       * image. These methods will become part of the element's public API,
@@ -332,7 +356,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       /**
-      * define two methods, first() and last(), that will jump to the first
+      * define two more methods, first() and last(), that will jump to the first
       * element or the last element of the caroussel
       */
 
@@ -359,7 +383,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (this.intl > this.max) {
           this.int = this.max;
         }
-        console.log(this.int);
         this._autoScroll();
       }
 
@@ -371,6 +394,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._autoScroll();
         // console.log(this.interval);
       }
+
       set_interval() {
         console.log(this.int) ;
         if (this.int < this._step) {
@@ -378,8 +402,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         this._autoScroll();
       }
-    }
 
+      add_to_queue() {
+        var image = this.selected.src;
+        var index = this.Images.indexOf(image);
+        if (index < 0) {
+          this.push("Images", image) ;
+        }
+      }
+
+      remove_from_queue() {
+        var image = this.selected.src;
+        var index = this.Images.indexOf(image);
+        if ( index >= 0 ) {
+          this.splice("Images",index,1) ;
+        }
+      }
+
+
+      download_images() {
+        var element = this.shadowRoot.querySelector("#download");
+        var children = element.children;
+        var numChildren = children.length ;
+        for ( var i = 0; i < numChildren -1 ; i++ ) {
+          simulateClick(children[i]) ;
+        }
+      }
+
+    } // end Class Definition
+
+    function simulateClick(control)  {
+      if (document.all) {
+       control.click();
+       }  else {
+         var evObj = document.createEvent('MouseEvents');
+         evObj.initMouseEvent('click', true, true, window, 1, 12, 345, 7, 220, false, false, true, false, 0, null );
+         control.dispatchEvent(evObj);
+       }
+     }
     // Register custom element definition using standard platform API
     customElements.define(MyImageCarousel.is, MyImageCarousel);
 

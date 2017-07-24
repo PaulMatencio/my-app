@@ -10,11 +10,12 @@ const MyMixin = superclass => class extends superclass {
         type: Object,
         observer: '_selectedChanged'
       },
+
       _title: {
         type: String,
         notify: true,
-        reflectToAttribute: true
       },
+
       /**
        * Boolean value to decide if images should change automatically.
        */
@@ -26,33 +27,21 @@ const MyMixin = superclass => class extends superclass {
         observer: '_autoScroll'
       },
 
-      hosts: {
-        type: String,
-        /* value: "https://app-layout-assets.appspot.com/", */
-        value: "../images/png/",
+      images: {
+        type : Array,
+        value: getimages()
+      },
+
+      /**
+          Append new images to the images array attribute
+      */
+      appendimage: {
+        type: Boolean,
+        value: false,
         notify: true,
         reflectToAttribute: true
       },
 
-      images: {
-        type : Array,
-        /* value: function() { return ["assets/bg1.jpg","assets/bg2.jpg","assets/bg3.jpg","assets/bg4.jpg"];
-        }  */
-        value: function() {
-          return ["JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
-          "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png","NL1010536C2p17.png","NL1010536C2p9.png"];
-        }
-      },
-
-      /**
-          Thsi work with images
-      */
-      appendImage: {
-        type: Boolean,
-        value: true,
-        notify: true
-      }
-      ,
       /**
        * Transition ( animation) between images
        * default off  for scrolling forward
@@ -85,6 +74,7 @@ const MyMixin = superclass => class extends superclass {
         notify: true,
         reflectToAttribute: true
       },
+
       /**
        *  step of interval increase
        * This will only work if autoscroll is set to true
@@ -96,24 +86,61 @@ const MyMixin = superclass => class extends superclass {
       },
 
       /**
-       * use to save the current interval
-       *
-       */
+      *  Images host
+      */
+      hosts: {
+        type: String,
+        // value: "https://app-layout-assets.appspot.com/",
+        value: "../images/png/",
+        notify: true
+      },
 
+      /**
+      *  used to keep images for futher process ( ex: download)
+      */
+      Images: {
+        type: Array,
+        value: [],
+        notify: true
+      },
+
+      _keepIt: {
+        type: Boolean,
+        value: false,
+        notify: true,
+        reflectToAttribute: true
+      },
+
+      /**
+       * used to save the current interval
+       */
       _currentInterval: {
         type: Object,
+        reflectToAttribute: true
       },
 
       /**
        * used to display the action bar
        * This will only work if autoscroll is set to true
        */
-      actions_bar: {
+      actions: {
         type: Boolean,
         /* notify: true, */
-        value: false
-        /* reflectToAttribute: true */
+        value: false,
+        reflectToAttribute: true
+      },
+
+      /**
+       * reserved for future use to toggle info
+      */
+
+      info : {
+        type: Boolean,
+        value: false,
+        notify: true,
+        reflectToAttribute: true
       }
+
     };
   }
 
@@ -145,7 +172,7 @@ const MyMixin = superclass => class extends superclass {
   }
 
   _autoScroll() {
-    if ( typeof(this.currentInterval)  != undefined ) {
+    if ( typeof(this.currentInterval)  !=  "undefined ") {
       clearInterval(this.currentInterval)
     }
     if (this.autoscroll) {
@@ -153,9 +180,14 @@ const MyMixin = superclass => class extends superclass {
       console.log(this.currentInterval);
     }
   }
-};
 
-function  _getImages() {
-   return  ["assets/bg1.jpg","assets/bg2.jpg","assets/bg3.jpg","assets/bg4.jpg"];
+}; // end of superclass extension
+
+function  getimages() {
+  // return  ["assets/bg1.jpg","assets/bg2.jpg","assets/bg3.jpg","assets/bg4.jpg"];
+  return ["JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
+          "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png",
+          "NL1010536C2p17.png","NL1010536C2p9.png"];
 }
+
 </script>
