@@ -22,10 +22,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="my-icons.html">
+
+<link rel="import" href="my-image-carousel-custom-styles.html">
 <link rel="import" href="my-image-carousel-shared-styles.html">
-<!--link rel="import" href="my-show-git-shared-styles.html"-->
 <link rel="import" href="my-show-git-custom-styles.html">
-<link rel="stylesheet" href="my-image-carousel.css">
+<!--link rel="stylesheet" href="my-image-carousel.css"-->
 
 
 <link rel="lazy-import" href="my-view1.html">
@@ -77,9 +78,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-weight: bold;
       }
 
-      /*  my-image-carousel style
-          Important for Performance
-      */
+      /*
       my-image-carousel {
         width: 100%;
         contain: content;
@@ -88,7 +87,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       my-image-carousel::after {
         display: block;
         content: '';
-        padding-top: 70%; /* 4:3 = height is 75% of width */
+        padding-top: 75%:
       }
 
       my-image-carousel img {
@@ -96,20 +95,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         width: 100%;
         height: 100%;
       }
-
-      /* body {
-        margin: 0;
-        font-family: 'Roboto', 'Noto', sans-serif;
-        line-height: 1.2;
-        min-height: 100vh;
-        background-color: #eeeeee;
-      } */
-
+      */
 
     </style>
 
+
+    /*  my-image-carousel style
+        Important for Performance
+    */
+    <style  include="my-image-carousel-shared-styles"></style>>
+
     <custome-style>
-        <style include="my-image-carousel-shared-styles"></style>
+        <style include="my-image-carousel-custom-styles"></style>
         <style include="my-show-git-custom-styles"></style>
         <style  include="iron-flex iron-flex-alignment"></style>
     </custom-style>

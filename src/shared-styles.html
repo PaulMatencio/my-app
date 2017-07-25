@@ -15,13 +15,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style>
       .card {
-        margin: 24px;
+        margin: var(--card-margin,5px);
         padding: 16px;
-        color: #757575;
-        border-radius: 5px;
-        background-color: #fff;
+        color: var(--card-color,#757575);
+        border-radius: 2px;
+        background-color: var(--card-background-color,#fff);
+        width: var(--card-width, auto);
+        height: var(--card-height, auto);
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
       }
+
+      /* used when mobile width <= 768px */
+      .card[mobile] {
+          width: 80%;
+      }
+
+      /* used when mobile 768 px <= width <= 1600px */
+      .card[laptop] {
+          width: 40%;
+      }
+
+      .card:hover {
+        -webkit-transform: scale(1.05);
+        transform: scale(1.05);
+        background-color: #fff;
+      }
+
       .circle {
         display: inline-block;
         width: 64px;
@@ -33,6 +52,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-size: 30px;
         line-height: 64px;
       }
+
       h1 {
         margin: 16px 0;
         color: #212121;

@@ -1,30 +1,45 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<!-- personalized  style -->
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<!-- shared styles for all views -->
 <dom-module id="my-image-carousel-shared-styles">
   <template>
-    <custon-style>
-    <style>
-    /* Define a document-wide default—will not override a :host rule in  */
-    html {
-      --iron-icon-stroke-color: black;
-      --icon-toggle-outline-color: black;
-    }
-    /* Override the value specified in demo-element */
+
+  <style>
     my-image-carousel {
-        --iron-icon-fill-color: blue;
-        --iron-icon-stroke-color: blue;
-        --iron-icon-height: 24px;
-        --iron-icon-width: 24px;
-        --icon-toggle-pressed-color: green;
-      }
-      /* This rule will apply to the body of this html! */
-    body {
-        --iron-icon-fill-color: blue;
-        --iron-icon-stroke-color: blue;
-        --iron-icon-height: 36px;
-        --iron-icon-width: 36px;
-        --icon-toggle-color: red;
-      }
-      </style>
-      <custon-style>
+      width: 90%;
+      contain: content;
+      margin: calc( 5% );
+    }
+
+    my-image-carousel::after {
+      display: block;
+      content: '';
+      padding-top: 75%; /* 4:3 = height is 75% of width */
+    }
+
+    my-image-carousel img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    /*
+    my-image-carousel  .navigation-icons {
+      @apply --layout;
+      @apply --layout-center;
+      display: inline-flex;
+      position: absolute;
+      height: calc(var(--iron-icon-height, 24px) + 5px);
+      background: var(--image-carousel-navigation-icon-color, rgba(255, 255, 255, 1));
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                  0 1px 5px 0 rgba(0, 0, 0, 0.12),
+                  0 3px 1px -2px rgba(0, 0, 0, 0.2);
+                  transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+                  border-radius: 25%;
+                  background-color:  white;
+                  cursor: pointer;
+    }
+    */
+    </style>
   </template>
-<dom-module>
+</dom-module>

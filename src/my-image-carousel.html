@@ -20,11 +20,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <!--link rel="import" href="/bower_components/polymer/lib/utils/flattened-nodes-observer.html"-->
 <!--link rel="import" href="bower_components/polymer/lib/elements/dom-repeat.html"-->
 <link rel="import" href="my-mixin.html">
+<link rel="import" href="shared-styles.html">
+<!--link rel="import" href="my-image-carousel-shared-styles.html"-->
 
 <dom-module id="my-image-carousel">
   <template>
-
     <!-- Styles MUST be inside template -->
+    <style include="shared-styles"></style>
+    <!--style include="my-image-carousel-shared-styles"></style-->
     <style>
 
       :host {
@@ -32,7 +35,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         position: relative;
         overflow: hidden;
       }
-
 
       /**
        * In a shadow root, the :host CSS selector refers to the host of the
@@ -47,6 +49,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       div > ::slotted(:not([selected])) {
         display: none;
       }
+
       button {
         position: absolute;
         top: calc(50% - 20px);
@@ -72,7 +75,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       #nextBtn {
         right: calc(var(--iron-icon-width, 24px)/2);
       }
-      /*  NAVIGATION ICONS */
+
+      /* NAVIGATION ICONS */
       .navigation-icons {
         @apply --layout;
         @apply --layout-center;
