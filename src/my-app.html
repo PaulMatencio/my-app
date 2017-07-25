@@ -20,20 +20,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="my-icons.html">
 <link rel="import" href="my-image-carousel-shared-styles.html">
-
+<!--link rel="import" href="my-show-git-shared-styles.html"-->
+<link rel="import" href="my-show-git-custom-styles.html">
 <link rel="stylesheet" href="my-image-carousel.css">
+
 
 <link rel="lazy-import" href="my-view1.html">
 <link rel="lazy-import" href="my-view2.html">
 <link rel="lazy-import" href="my-view3.html">
 <link rel="lazy-import" href="my-newview.html">
 <link rel="lazy-import" href="my-image-carousel.html">
+<link rel="lazy-import" href="my-show-git-repositories.html">
 <link rel="lazy-import" href="my-view404.html">
 
 
-<dom-module id="epo-images-viewer">
+<dom-module id="my-app">
   <template>
     <style>
       :host {
@@ -93,10 +97,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         height: 100%;
       }
 
+      /* body {
+        margin: 0;
+        font-family: 'Roboto', 'Noto', sans-serif;
+        line-height: 1.2;
+        min-height: 100vh;
+        background-color: #eeeeee;
+      } */
+
+
     </style>
 
     <custome-style>
         <style include="my-image-carousel-shared-styles"></style>
+        <style include="my-show-git-custom-styles"></style>
+        <style  include="iron-flex iron-flex-alignment"></style>
     </custom-style>
 
     <app-location route="{{route}}"></app-location>
@@ -111,8 +126,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-drawer id="drawer" slot="drawer">
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+          <a name="view1" href="view1">Home</a>
           <a name="image-carousel" href="image-carousel">Image Carousel</a>
-          <a name="view1" href="view1">View One</a>
+          <a name="show-git-repositories" href="show-git-repositories">Show Git repositories</a>
           <a name="view2" href="view2">View Two</a>
           <a name="view3" href="view3">View Three</a>
           <a name="newview" href="newview">New View</a>
@@ -125,7 +141,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <app-header slot="header" condenses reveals effects="waterfall">
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title>Welcome to the new Epo Images Viewer</div>
+            <div main-title>Welcome to my application</div>
           </app-toolbar>
         </app-header>
 
@@ -134,13 +150,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
+          <my-view1 name="view1"></my-view1>
           <my-image-carousel name="image-carousel" autoscroll appendimage  int=250 actions max=12000>
               <!--img data-src="https://app-layout-assets.appspot.com/assets/bg1.jpg"-->
               <img data-src="../images/png/NL1010536C2p15.png">
               <img data-src="../images/png/NL1010536C2p12.png">
               <img data-src="../images/png/NL1010536C2p16.png ">
           </my-image-carousel>
-          <my-view1 name="view1"></my-view1>
+
+          <my-show-git-repositories name="show-git-repositories"> user="PaulMatencio"</my-show-git-repositories>
+
           <my-view2 name="view2"></my-view2>
           <my-view3 name="view3"></my-view3>
           <my-newview name="newview"></my-newview>
@@ -151,9 +170,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
-    class EpoImagesViewer extends Polymer.Element {
+    class MyApp extends Polymer.Element {
 
-      static get is() { return 'epo-images-viewer'; }
+      static get is() { return 'my-app'; }
 
       static get properties() {
         return {
@@ -215,7 +234,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.page = 'view404';
       }
     }
-    console.log(EpoImagesViewer.is);
-    window.customElements.define(EpoImagesViewer.is, EpoImagesViewer);
+    console.log(MyApp.is);
+    window.customElements.define(MyApp.is, MyApp);
   </script>
 </dom-module>
