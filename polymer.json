@@ -5,7 +5,9 @@
     "src/my-view1.html",
     "src/my-view2.html",
     "src/my-view3.html",
-    "src/my-view404.html"
+    "src/my-view404.html",
+    "src/my-image-carousel.html",
+    "src/my-show-git-repositories.html"
   ],
   "sources": [
     "src/**/*",
@@ -16,6 +18,21 @@
     "manifest.json",
     "bower_components/webcomponentsjs/*.js"
   ],
+
+  "builds": [{
+    "name": "bundled",
+    "bundle": true,
+    "js": {"minify": true},
+    "css": {"minify": true},
+    "html": {"minify": true}
+    },
+    {
+      "name": "unbundled",
+      "js": {"minify": true},
+      "css": {"minify": true},
+      "html": {"minify": true}
+    }
+ ],
   "lint": {
     "rules": ["polymer-2"]
   }

@@ -202,10 +202,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <dom-if>
 
 </template>
-  <script>
-    /** Extend Polymer.Element base class
-     *  class MyCarousel extends Polymer.Element
-     */
+ <script>
+     /** Extend Polymer.Element base class
+       *  class MyCarousel extends Polymer.Element
+       */
     class MyImageCarousel extends MyMixin(Polymer.Element)   {
       static get is() { return 'my-image-carousel' }
       constructor() {
@@ -215,12 +215,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ready() {
         super.ready();
         if (this.appendimage) {
-          // this is required since _appendImage is a private method
+
           this._appendImage(this.images);
         }
         /**
-          callback this._installListeners.bind(this)
-        */
+          *callback this._installListeners.bind(this)
+         */
         requestAnimationFrame(this._installListeners.bind(this));
       }
 
@@ -231,7 +231,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             * quickly access elements in the <template> with the corresponding id.
             * For more details,
             * see https://www.polymer-project.org/2.0/docs/devguide/dom-template#node-finding.
-          */
+            */
           if (selected) {
 
             var paths =  selected.src.split("/") ;
@@ -261,16 +261,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *   The parent  element (this) is the image-carousel
        */
       _appendImage(images) {
+
         images.forEach( function(image){
           var img  = document.createElement("img");
           img.setAttribute('data-src', this.hosts + image );
           this.appendChild(img);
         },this);
+
       }
-        /* Lazy-load images */
+        /**
+        * Lazy-load images
+        */
 
       _loadImage(img) {
-        // console.log(img)
+        /* console.log(img) */
         if (img && !img.src) {
         img.src = img.getAttribute('data-src');
         }
@@ -281,7 +285,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if ( elem != undefined ) {
           elem.style.display = 'block';
           elem.style.transition = transition ? 'transform 0.2s' : '';
-          //elem.style.transition = transition ? 'transform' + this.transition+'s' : '';
+          /*elem.style.transition = transition ? 'transform' + this.transition+'s' : '';*/
           elem.style.transform = 'translate3d(' + x + 'px, 0, 0)';
         }
       }
@@ -315,11 +319,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       previous_image() {
         const elem = this.selected && this.selected.previousElementSibling;
         if (elem) {
-          // Setup transition start state
+          /* Setup transition start state */
           const oldSelected = this.selected;
           this._translateX(oldSelected, 0);
           this._translateX(elem, -this.offsetWidth);
-          // star the transition
+          /* star the transition */
           this.selected = elem;
           this._translateX(oldSelected, this.offsetWidth, true /* transition */);
           this._translateX(elem, 0, true /* transition */);
@@ -336,11 +340,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       next_image() {
         const elem = this.selected && this.selected.nextElementSibling;
         if (elem) {
-          // Setup transition start state
+          /**
+          * Setup transition start state
+          */
           const oldSelected = this.selected;
           this._translateX(oldSelected, 0);
           this._translateX(elem, this.offsetWidth);
-          // star the transition
+          /**
+          * star the transition
+          */
           this.selected = elem;
 
           this._translateX(oldSelected,-this.offsetWidth,this.transition);
@@ -366,7 +374,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       first_image() {
         const elem = this.selected ;
-        // this._translateX(elem, 0);
+        /* this._translateX(elem, 0); */
         this._translateX(elem, this.offsetWidth,true);
         var first = this.firstElementChild;
         this.selected = first;
@@ -375,7 +383,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       last_image() {
         const elem = this.selected ;
-        // this._translateX(elem, 0);
+        /* this._translateX(elem, 0); */
         this._translateX(elem, -this.offsetWidth,true);
         var last = this.lastElementChild;
         this.selected = last;
@@ -396,7 +404,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.int = this._step;
         }
         this._autoScroll();
-        // console.log(this.interval);
+
       }
 
       set_interval() {
@@ -428,12 +436,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var element = this.shadowRoot.querySelector("#download");
         var children = element.children;
         var numChildren = children.length ;
+
         for ( var i = 0; i < numChildren -1 ; i++ ) {
           simulateClick(children[i]) ;
         }
+
       }
 
-    } // end Class Definition
+    }
 
     function simulateClick(control)  {
       if (document.all) {
@@ -444,8 +454,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
          control.dispatchEvent(evObj);
        }
      }
-    // Register custom element definition using standard platform API
+    /**
+    * Register custom element definition using standard platform API
+    */
     customElements.define(MyImageCarousel.is, MyImageCarousel);
 
-  </script>
+ </script>
 </dom-module>
