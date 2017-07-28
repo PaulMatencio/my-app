@@ -5,9 +5,11 @@
 <link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/app-storage/app-indexeddb-mirror/app-indexeddb-mirror.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="icon-toggle.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-show-git-shared-styles.html">
+<link rel="import" href="my-paper-icon-button-custom-styles.html">
 
 <dom-module id="my-show-git-repositories">
     <template>
@@ -20,14 +22,34 @@
         :host {
             display: block;
             padding : 0;
-            line-height: 1.3;
+            line-height: 1.5;
             background-color: var(--host-background-color, #efefef);
         }
 
-
-        #filter {
-          margin-left: 5%;
+        .card {
+          @apply --my-card;
+          background-color: var(--paper-indigo-50);
         }
+
+        @media (max-width: 640px ) {
+          .card {
+            height: auto;
+            width: auto;
+           /*  background-color: white; */
+          }
+          .card:hover {
+              /* background-color: var(--paper-indigo-50); */
+              -webkit-transform: scale(1.1);
+              transform: scale(1.1);
+          }
+        }
+
+        @media (min-width: 641px ) and (max-width: 1024px) {
+          .card {
+            width: 80%;
+          }
+        }
+
 
         a {
           display: block;
@@ -37,54 +59,23 @@
           display: none;
         }
 
-        .left {
-          width: calc(15% - var(--card-margin, 15px));
-          top: 5px;
-          font-size: 25px;
-        }
-
-        /* used when media query return width <= 768px */
-        .left[mobile] {
-          display: none;
-        }
-
-        .right {
-         /*  width: calc(85% - var(--card-margin, 15px)); */
-          width: calc(100% - var(--card-margin, 15px));
-        }
-
-        /* used when media query return width <= 768px */
-        .right[mobile] {
-          width:  calc(100% - var(--card-margin, 15px));
-        }
-
         .name {
-          color: var(--title-background-color ,#AB5530);
-          font-weight: bold;
-          text-transform: uppercase;
-          text-overflow: ellipsis;
-          overflow: hidden;
-        }
-
-        .bold {
-          font-size: 1.8vh;
-        }
-
-        .input,.title {
-          background-color: var(--title-background-color, #fff) ;
+          @apply --my-important;
+          display: inline-flex;
+          margin-bottom: 10px;
         }
 
         .title {
-            font-size: var(--title-font-size, 3.5vh);
-            color: var(--title-color, #000);
-
+          @apply --my-title;
+          background-color: var(--paper-indigo-50);
+          color: var(--paper-blue-600);
         }
+
         div > .title {
-          margin : 0;
+          margin: 0;
         }
-
-        .margin-left {
-          margin-left: 15px;
+        div  a {
+          display: inline-flex;
         }
 
       </style>
@@ -92,16 +83,22 @@
       <!-- import classes in an element -->
       <style include="iron-flex iron-flex-alignment"></style>
 
+      <!--  include custom style   -->
+      <custome-style>
+        <style include="my-paper-icon-button-custom-styles"></style>
+      </custom-style>
 
       <div class= "layout horizontal center-center title">
             <div class="title"> <span> Show Github repositories</span> </div>
-            <div class="margin-left"> <span> #[[numberRepos]] </span></div>
+            <div> <span> #[[numberRepos]] </span></div>
       </div>
       <div class="layout horizontal center-center input">
           <iron-input  id="user" bind-value="{{user}}">
             <input type="text" value="{{user::input}}">
           </iron-input>
-          <iron-icon class="icon" icon="search" on-click="_fire" ></iron-icon>
+           <paper-icon-button icon="search" title="Search on Github" class="light-blue"  on-click="_fire"></paper-icon-button>
+          <!--iron-icon class="icon" icon="search" on-click="_fire" ></iron-icon-->
+
           <iron-input  id="filter"  bind-value="{{filter}}">
             <input type="text" placeholder= "filter name" value="{{filter::input}}">
           </iron-input>
@@ -132,20 +129,26 @@
       </app-indexeddb-mirror>
 
       <div class="layout horizontal">
-        <div  class="layout horizontal center-center wrap right">
+        <div  class="layout horizontal center-center wrap">
           <!--template is="dom-repeat" items="[[repos]]" -->
           <template is="dom-repeat" items="[[persistedData]]">
             <div  id="repos" class="card layout-flex">
-               <div class="name"><span>[[item.name]]</span></div>
-               <div class="description>"> <span>[[item.description]]</span></div>
-               <div><a href="[[item.html_url]]"> Git Url </a> </div>
-               <div><span>Created at:</span> [[item.created_at]]</div>
-               <dom-if if="[[item.has_pages]]">
-                  <template>
-                    <!--div><strong>Has pages:</strong> [[item.has_pages]] </div-->
-                    <div><a href="[[item.homepage]]"> Home Page </a> </div>
-                  </template>
-               </dom-if>
+               <div class="name">
+                 [[item.name]]<a href="[[item.html_url]]"> <paper-icon-button icon="link" title="Git url" class="light-blue"></paper-icon-button></a>
+                   <dom-if if="[[item.has_pages]]">
+                      <template>
+                        <div>
+                          <a href="[[item.homepage]]"> <paper-icon-button icon="home" title="Home page"  class="light-blue"></paper-icon-button></a>
+                        </div>
+                      </template>
+                   </dom-if>
+
+               </div>
+               <div class="description>">
+                 <span>[[item.description]]</span>
+               </div>
+               <div>[[item.language]]</div>
+               <div>[[item.created_at]]</div>
              </div>
            </template>
          </div>

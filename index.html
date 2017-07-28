@@ -52,10 +52,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta name="msapplication-TileImage" content="images/manifest/icon-144x144.png">
     <meta name="msapplication-TileColor" content="#3f51b5">
     <meta name="msapplication-tap-highlight" content="no">
+
+
+      <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
+    <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+      <!-- Promise polyfill needed for 1.0-hybrid mode since neither iron-request 2.x nor
+                webcomponentsjs 0.x include the Promise polyfill.
+                pre : bower install es6-promise --save
+              -->
+    <script src="bower_components/es6-promise/es6-promise.auto.min.js"></script>
+    <!--link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Abril+Fatface' type="text/css"-->
+
+    <!-- Load your application shell -->
+
     <script>
       // Register the base URL
       const baseUrl = document.querySelector('base').href;
-
+      console.log(baseUrl)
       // Load and register pre-caching Service Worker
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
@@ -63,14 +76,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
       }
     </script>
-    <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
-    <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-    <!-- Promise polyfill needed for 1.0-hybrid mode since neither iron-request 2.x nor
-              webcomponentsjs 0.x include the Promise polyfill. -->
-    <script src="bower_components/es6-promise/dist/es6-promise.auto.min.js"></script>
-    <!--link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Abril+Fatface' type="text/css"-->
 
-    <!-- Load your application shell -->
     <link rel="import" href="src/my-app.html">
 
     <!-- Add any global styles for body, document, etc. -->

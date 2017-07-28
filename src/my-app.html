@@ -26,6 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="my-image-carousel-custom-styles.html">
 <link rel="import" href="my-image-carousel-shared-styles.html">
 <link rel="import" href="my-show-git-custom-styles.html">
+<link rel="import" href="my-paper-icon-button-custom-styles.html">
 <!--link rel="stylesheet" href="my-image-carousel.css"-->
 
 
@@ -42,9 +43,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style>
       :host {
-        --app-primary-color: #7c7c7c;
-        --app-secondary-color: black;
-
+        --app-primary-color: #acacac;
+        --app-secondary-color: #3c3c3c;
+        --app-toolbar-font-size: 25px;
+        --app-drawer-width: 300px;
         display: block;
       }
 
@@ -74,42 +76,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .drawer-list a.iron-selected {
-        color: black;
+        /* color: black; */
         font-weight: bold;
       }
 
-      /*
-      my-image-carousel {
-        width: 100%;
-        contain: content;
+      paper-icon-button[hidden] {
+        display: none;
       }
-
-      my-image-carousel::after {
-        display: block;
-        content: '';
-        padding-top: 75%:
-      }
-
-      my-image-carousel img {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-      }
-      */
 
     </style>
 
-
-    <!--*  my-image-carousel style
-        Important for Performance
-    */ -->
-    <style  include="my-image-carousel-shared-styles"></style>>
-
+    <!--  include custom style   -->
     <custome-style>
         <style include="my-image-carousel-custom-styles"></style>
         <style include="my-show-git-custom-styles"></style>
+        <style include="my-paper-icon-button-custom-styles"></style>
         <style  include="iron-flex iron-flex-alignment"></style>
     </custom-style>
+
+        <!--*  my-image-carousel style
+            Important for Performance
+        */ -->
+    <style  include="my-image-carousel-shared-styles"></style>>
 
     <app-location route="{{route}}"></app-location>
     <app-route
@@ -119,6 +107,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         tail="{{subroute}}"></app-route>
 
     <app-drawer-layout fullbleed>
+
+
       <!-- Drawer content -->
       <app-drawer id="drawer" slot="drawer">
         <app-toolbar>Menu</app-toolbar>
@@ -138,7 +128,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <app-header slot="header" condenses reveals effects="waterfall">
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title>Welcome to my application</div>
+            <div main-title> Web components is awesome </div>
           </app-toolbar>
         </app-header>
 
@@ -231,7 +221,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.page = 'view404';
       }
     }
-    console.log(MyApp.is);
     window.customElements.define(MyApp.is, MyApp);
+    console.log(MyApp) ;
   </script>
 </dom-module>

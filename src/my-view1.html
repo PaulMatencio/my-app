@@ -9,10 +9,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tab.html">
+<link rel="import" href="my-paper-icon-button-custom-styles.html">
+
+
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-view1">
   <template>
+
     <style include="shared-styles">
       :host {
         display: block;
@@ -21,19 +42,76 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <div class="card">
+    <!--  include custom style   -->
+    <custome-style>
+      <style include="my-paper-icon-button-custom-styles"></style>
+    </custom-style>
+
+    <app-header name="view1" condenses reveals fixed effects="waterfall">
+      <app-toolbar primary>
+        <paper-tabs selected="0" scrollable>
+          <paper-tab>The first tab</paper-tab>
+          <paper-tab>Tab two</paper-tab>
+          <paper-tab>The third tab</paper-tab>
+          <paper-tab>Fourth tab</paper-tab>
+        </paper-tabs>
+      </app-toolbar>
+    <app-header>
+
+
+    <!--app-header-layout has-scrolling-region>
+
+      <iron-pages selected="[[page]]" attr-for-selected="name">
+          <app-header name="view1" condenses reveals fixed effects="waterfall">
+            <app-toolbar>
+              <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+              <div title>My View (1)</div>
+            </app-toolbar>
+            <app-toolbar primary>
+              <paper-tabs attr-for-selected="name" fallback-selection="tab-1" selected={{selected}} style="width: 100%" noink scrollable>
+                <paper-tab name="tab-1">Tab 1</paper-tab>
+                <paper-tab name="tab-2">Tab 2</paper-tab>
+              </paper-tabs>
+            </app-toolbar>
+          </app-header>
+          <app-header name="view2" condenses reveals effects="waterfall">
+            <app-toolbar>
+              <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+              <div title>My View (2)</div>
+            </app-toolbar>
+          </app-header>
+        </iron-pages>
+
+    <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
+          <my-view1 name="view1"></my-view1>
+          <my-view2 name="view2"></my-view2>
+          <my-view3 name="view3"></my-view3>
+    </iron-pages>
+
+  </app-header-layout-->
+
+
+
+    <!--div class="card">
       <div class="circle">1</div>
       <h1>View One</h1>
       <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
       <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>
+    </div-->
+
   </template>
 
   <script>
     class MyView1 extends Polymer.Element {
       static get is() { return 'my-view1'; }
-    }
 
+      constructor() {
+        super();
+      }
+      ready() {
+        super.ready();
+      }
+    }
     window.customElements.define(MyView1.is, MyView1);
   </script>
 </dom-module>
