@@ -20,6 +20,7 @@
     "paper-checkbox": "PolymerElements/paper-checkbox#2.0",
     "paper-icon-buton": "PolymerElements/paper-icon-button#2.0",
     "paper-item": "PolymerElements/paper-item#2.0",
+    "paper-fab": "PolymerElements/paper-fab#2.0",
     "iron-ajax": "PolymerElements/iron-ajax#^2.0.0",
     "iron-list": "PolymerElements/iron-list#^2.0.0",
     "polymer": "Polymer/polymer#^2.0.0",

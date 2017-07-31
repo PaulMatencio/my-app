@@ -59,6 +59,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: none;
       }
 
+      app-drawer {
+        --app-drawer-content-container: { box-shadow: 1px 0 5px 1px rgba(0,0,0,0.25);}
+        --app-drawer-scrim-background: rgba(179, 157, 219, 0.5);
+      }
+
       app-header {
         color: #fff;
         background-color: var(--app-primary-color);
@@ -118,21 +123,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <app-drawer-layout fullbleed drawer-width="288px" responsive-width="1288px" >
 
-
       <!-- Drawer content -->
       <app-drawer id="drawer" slot="drawer">
         <app-toolbar>Menu</app-toolbar>
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list horizontal-layout" role="navigation">
-          <a name="home" href="home"><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="home" class="medium"></iron-icon><span>Home</span></paper-icon-item></a>
-          <a name="image-carousel" href="image-carousel"><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="image:collections" class="medium"></iron-icon><span>Image Carousel</span></paper-icon-item></a>
-          <a name="show-git-repositories" href="show-git-repositories"><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="av:web-asset" class="medium"></iron-icon><span>Show Git repositories</span></paper-icon-item></a>
+        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+          <a name="home" href="home" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="home" class="medium"></iron-icon><span>Home</span></paper-icon-item></a>
+          <a name="image-carousel" href="image-carousel" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="image:collections" class="medium"></iron-icon><span>Image Carousel</span></paper-icon-item></a>
+          <a name="show-git-repositories" href="show-git-repositories" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="av:web-asset" class="medium"></iron-icon><span>Show Git repositories</span></paper-icon-item></a>
 
-          <!--a name="home" href="home"><iron-icon icon="home" class="medium"></iron-icon><span>Home</home></a>
-          <a name="image-carousel" href="image-carousel"><iron-icon icon="image:collections" class="medium"></iron-icon><span>Image Carousel</span></a>
-          <a name="show-git-repositories" href="show-git-repositories"><iron-icon icon="av:web-asset" class="medium"></iron-icon><span>Show Git repositories</span></a-->
-          <a name="view2" href="view2"><iron-icon icon="done"></iron-icon><span>View Two</span></a>
-          <a name="view3" href="view3"><iron-icon icon="done"></iron-icon><span>View Three</span></a>
-          <a name="new-view" href="new-view"><iron-icon icon="done"></iron-icon><span>New View</span></a>
+          <a name="view2" href="view2" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="done"></iron-icon><span>View Two</span></paper-icon-item></paper-icon-item></a>
+          <a name="view3" href="view3" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="done"></iron-icon><span>View Three</span></paper-icon-item></a>
+          <a name="new-view" href="new-view" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="done"></iron-icon><span>New View</span></paper-icon-item></a>
         </iron-selector>
       </app-drawer>
 
@@ -142,7 +143,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <app-header slot="header" condenses reveals effects="waterfall">
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title> Web components is awesome </div>
+            <div main-title spacer> My Polymer 2 Application </div>
           </app-toolbar>
         </app-header>
 
