@@ -7,15 +7,11 @@
 
   <style>
     my-image-carousel {
-      width: 88%;
-      contain: content;
-      margin: calc( 5% );
+      @apply --my-carousel;
     }
 
     my-image-carousel::after {
-      display: block;
-      content: '';
-      padding-top: 60%; /* 4:3 = height is 75% of width */
+      @apply --my-image-carousel-after;
     }
 
     my-image-carousel img {

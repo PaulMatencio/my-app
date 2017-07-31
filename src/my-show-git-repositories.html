@@ -1,3 +1,4 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
@@ -31,6 +32,39 @@
           background-color: var(--paper-indigo-50);
         }
 
+        .hidden {
+          display: none;
+        }
+
+        .name {
+          @apply --my-important;
+          display: inline-flex;
+          margin-bottom: 10px;
+        }
+
+        .language {
+            @apply --my-important;
+            color: var(--paper-blue-900);
+        }
+
+        .title {
+          @apply --my-title;
+          background-color: var(--paper-indigo-50);
+          color: var(--paper-blue-600);
+        }
+
+        div > .title {
+          margin: 0;
+        }
+
+        a {
+          display: block;
+        }
+
+        div  a {
+          display: inline-flex;
+        }
+
         @media (max-width: 640px ) {
           .card {
             height: auto;
@@ -46,38 +80,9 @@
 
         @media (min-width: 641px ) and (max-width: 1024px) {
           .card {
-            width: 80%;
+            width: 40%;
           }
         }
-
-
-        a {
-          display: block;
-        }
-
-        .hidden {
-          display: none;
-        }
-
-        .name {
-          @apply --my-important;
-          display: inline-flex;
-          margin-bottom: 10px;
-        }
-
-        .title {
-          @apply --my-title;
-          background-color: var(--paper-indigo-50);
-          color: var(--paper-blue-600);
-        }
-
-        div > .title {
-          margin: 0;
-        }
-        div  a {
-          display: inline-flex;
-        }
-
       </style>
 
       <!-- import classes in an element -->
@@ -131,7 +136,7 @@
       <div class="layout horizontal">
         <div  class="layout horizontal center-center wrap">
           <!--template is="dom-repeat" items="[[repos]]" -->
-          <template is="dom-repeat" items="[[persistedData]]">
+          <template is="dom-repeat" items="[[persistedData]]"  initial-count="10">
             <div  id="repos" class="card layout-flex">
                <div class="name">
                  [[item.name]]<a href="[[item.html_url]]"> <paper-icon-button icon="link" title="Git url" class="light-blue"></paper-icon-button></a>
@@ -142,34 +147,16 @@
                         </div>
                       </template>
                    </dom-if>
-
                </div>
                <div class="description>">
                  <span>[[item.description]]</span>
                </div>
-               <div>[[item.language]]</div>
+               <div class="language">[[item.language]]</div>
                <div>[[item.created_at]]</div>
              </div>
            </template>
          </div>
        </div>
-
-
-        <!-- url="https://api.github.com/users/burczu/repos" -->
-        <!--
-        If verbode true, error messages will automatically
-        be logged to the console.
-
-
-        With auto set to true, the element performs a request whenever its url,
-        params or body properties are changed.
-
-        headers='{"X-Requested-With": "XMLHttpRequest"}'
-        on-response="_handleResponse"
-        last-response= {{ajaxResponse}}
-        -->
-
-
 
     </template>
 

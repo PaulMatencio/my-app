@@ -1,0 +1,120 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+<!--link rel="import" href="../bower_components/polymer/lib/legacy/legacy-element-mixin.html"-->
+<link rel="import" href="shrine-list.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-new-view">
+  <template>
+    <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', 'Noto', sans-serif;
+      }
+    </style>
+
+      <iron-ajax
+          url="data/items.json"
+          auto
+          last-response="{{items}}"
+          on-response="_handleItems">
+        </iron-ajax>
+
+      <iron-ajax
+          url="data/featured.json"
+          auto
+          last-response="{{featuredItems}}"
+          on-response="_handlefeaturedItems">
+        </iron-ajax>
+
+      <shrine-list name="list"
+        items="[[items]]"
+        section="[[section]]"
+        featured-item="[[featuredItem]]">
+      </shrine-list>
+
+      <!--template is="dom-repeat" items="[[items]]" sort="_sortItems" initial-count="1"-->
+      <!--template is="dom-repeat" items="[[items]]" initial-count="1">
+        <a href$="#[[section]]/[[item.id]]" class="item" aria-label$="More information about [[item.title]]">
+          <shrine-item item="[[item]]"></shrine-item>
+        </a>
+      </template-->
+
+  </template>
+
+  <script>
+    class MyNewView extends Polymer.Element {
+      static get is() { return 'my-new-view'; }
+
+      static get properties() {
+        return {
+
+          sections: {
+            type: Array,
+            value: function() {
+              return [
+                'feature',
+                'latest',
+                'fashion',
+                'furniture',
+                'beauty',
+                'food',
+                'travel'
+              ];
+            }
+          },
+
+          featuredItem: {
+            type: Object,
+            value: function() {
+              return {
+                "id": 16,
+                "title": "Green comfort chair",
+                "quote": "Leave the tunnel and the rain is fallin amazing things happen when you wait",
+                "imageUrl": "https://www.gstatic.com/angular/material-adaptive/shrine/chair.png",
+                "storeName": "Ali’s shop",
+                "storeAvatarUrl": "https://www.gstatic.com/angular/material-adaptive/shrine/ali-connors.png",
+                "price": "$300",
+                "category": "Feature"
+              };
+          },
+            reflectToAttribute: true
+          },
+
+          section: {
+            type: String,
+            value: 'feature',
+            reflectToAttribute: true
+          }
+        }
+      }
+
+      _handleItems(event) {
+        const req = event.detail; // iron-request
+        console.log('status', req.status, req.statusText);
+        console.log(this.items);
+      }
+
+      _handlefeaturedItems(event) {
+        const req = event.detail; // iron-request
+        console.log(this.featuredItems);
+      }
+
+      _getSection(index){
+        console.log("....");
+        return this.sections[index];
+      }
+
+      _getFeaturedItem(index) {
+        console.log("PPPP");
+          return this.featuresItems[index];
+       }
+
+    }
+
+
+
+    window.customElements.define(MyNewView.is, MyNewView);
+  </script>
+</dom-module>

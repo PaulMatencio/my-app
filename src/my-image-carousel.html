@@ -135,6 +135,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         bottom:  calc(var(--iron-icon-width, 24px));
       }
 
+      .toggle-icon:hover .stop::after{
+        position: relative;
+        content: 'Stop scrolling';
+        color: white;
+        background-color: black;
+        padding: 3px 8px;
+      }
+
+      .toggle-icon:hover .start::after {
+        position: relative;
+        content: 'Start scrolling';
+        color: white;
+        background-color: black;
+        padding: 3px 8px;
+      }
+
       .info {
         position: absolute;
         display: inline-flex;
@@ -159,8 +175,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         opacity: 0.3;
         color: red;
       }
+
       span {
         padding: 2px;
+      }
+
+
+
+      @media (max-width: 1288px) {
+        my-image-carousel::after {
+          padding-top: 70%;
+        }
       }
 
     </style>
@@ -169,7 +194,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <custome-style>
       <style include="my-paper-icon-button-custom-styles"></style>
     </custom-style>
-    
+
     <div>
       <slot>></slot>
     </div>
@@ -201,17 +226,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
 
         <div class="navigation-icons toggle-icon">
-          <icon-toggle  toggle-icon="arrow-forward" pressed="{{autoscroll}}"></icon-toggle>
           <dom-if if="[[autoscroll]]">
             <template>
-              <span>  Stop  </span>
+              <span class="stop"> </span>
             </template>
           </dom-if>
           <dom-if if="[[!autoscroll]]">
             <template>
-              <span>  Start  </span>
+              <span class="start">  </span>
             </template>
           </dom-if>
+          <icon-toggle  toggle-icon="arrow-forward" pressed="{{autoscroll}}"></icon-toggle>
         </div>
 
         <div class= "navigation-icons  first-icon">
