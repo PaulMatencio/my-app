@@ -1,14 +1,3 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
-<!-- Load the Polymer.Element base class -->
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
@@ -20,7 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="icon-toggle.html">
 <!--link rel="import" href="/bower_components/polymer/lib/utils/flattened-nodes-observer.html"-->
 <!--link rel="import" href="bower_components/polymer/lib/elements/dom-repeat.html"-->
-<link rel="import" href="my-mixin.html">
+<link rel="import" href="my-image-carousel-mixin.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-paper-icon-button-custom-styles.html">
 
@@ -95,34 +84,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         /* @apply --navigation-icon-mixin; */
       }
 
-       /*
-      .navigation-icons:hover {
-        box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
-                    0 1px 10px 0 rgba(0, 0, 0, 0.12),
-                    0 2px 4px -1px rgba(0, 0, 0, 0.4);
-        @apply --navigation-icon-hover-mixin;
-      }
-
-      .navigation-icons[hidden] {
-        visibility: hidden;
-      }
-      */
-
-      .left-icon {
-        left: calc(var(--iron-icon-width, 24px)/-2);
-        fill: var(--iron-icon-fill-color, currentcolor);
-        @apply --left-navigation-icon-mixin;
-      }
-
-      .right-icon {
-        right: calc(var(--iron-icon-width, 24px)/-2);
-        fill: var(--iron-icon-fill-color, currentcolor);
-        @apply --right-navigation-icon-mixin;
-      }
-
       .first-icon {
         left: calc(50% - var(--iron-icon-width)*2 - (var(--iron-icon-width) / 4 ));
-        bottom: calc(var(--iron-icon-width, 24px));
+        bottom: 5px;
         @apply --left-navigation-icon-mixin;
       }
 
@@ -132,7 +96,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .toggle-icon{
         right: calc(var(--iron-icon-width,24px));
-        bottom:  calc(var(--iron-icon-width, 24px));
+        bottom:  5px;
       }
 
       .toggle-icon:hover .stop::after{
@@ -155,7 +119,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         position: absolute;
         display: inline-flex;
         left:  calc(var(--iron-icon-width,24px));
-        top: calc(var(--iron-icon-width, 24px)/2);
+        top: 0;
         font-size: 14px;
         padding: 0;
         margin: 0;
@@ -196,19 +160,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </custom-style>
 
     <div>
-      <slot>></slot>
+      <slot></slot>
     </div>
-    <!--dom-if if="[[!autoscroll]]">
-      <template-->
+
     <button id="prevBtn" on-click="previous_image">&#x276E;</button>
     <button id="nextBtn" on-click="next_image">&#x276F;</button>
-    <!--/template>
-    <dom-if-->
 
     <dom-if if="[[actions]]">
       <template>
         <div class="info">
-          <p> {{ _title }} </p>
+          <!--p> {{ _title }} </p-->
           <dom-if if="[[autoscroll]]">
             <template>
               <paper-slider value="{{int}}" max="[[max]]" step="[[_step]]" max-marker="40" on-tap="set_interval" ></paper-slider>
@@ -265,12 +226,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ready() {
         super.ready();
         if (this.appendimage) {
-
           this._appendImage(this.images);
         }
-        /**
-          *callback this._installListeners.bind(this)
-         */
         requestAnimationFrame(this._installListeners.bind(this));
       }
 
@@ -284,8 +241,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             */
           if (selected) {
 
-            var paths =  selected.src.split("/") ;
-            this._title = paths[paths.length -1];
+            if (selected !== undefined) {
+              var paths =  selected.src.split("/") ;
+              this._title = paths[paths.length -1];
+            }
 
             var previous = selected.previousElementSibling;
             var next = selected.nextElementSibling;
@@ -334,7 +293,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _translateX(elem, x, transition) {
         if ( elem != undefined ) {
           elem.style.display = 'block';
-          elem.style.transition = transition ? 'transform 0.2s' : '';
+          elem.style.transition = transition ? 'transform 0.05s' : '';
           /*elem.style.transition = transition ? 'transform' + this.transition+'s' : '';*/
           elem.style.transform = 'translate3d(' + x + 'px, 0, 0)';
         }
@@ -375,16 +334,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this._translateX(elem, -this.offsetWidth);
           /* star the transition */
           this.selected = elem;
-          this._translateX(oldSelected, this.offsetWidth, true /* transition */);
-          this._translateX(elem, 0, true /* transition */);
-        } else {
+
+          this._translateX(oldSelected, this.offsetWidth, true  );
+          this._translateX(elem, 0, true  );
+
+        } /*else {
           /*
           var last  = this.lastElementChild;
           this.selected = last;
           this._translateX(last, 0, true /* transition );
-          */
+
           this.last_image();
         }
+        */
       }
 
       next_image() {
@@ -400,22 +362,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           * star the transition
           */
           this.selected = elem;
-
+          /*
           this._translateX(oldSelected,-this.offsetWidth,this.transition);
           this._translateX(elem, 0, this.transition);
+          */
+          this._translateX(oldSelected,-this.offsetWidth,false);
+          this._translateX(elem, 0, false);
 
-          this._translateX(oldSelected,-this.offsetWidth);
-          this._translateX(elem, 0);
 
-        } else {
+        } /*else {
           /*
           var first = this.firstElementChild;
           this.selected = first;
           this._translateX(first, 0, true /* transition );
           */
-          this.first_image()
+
+          /* this.first_image()
         }
+        */
       }
+
+
 
       /**
       * define two more methods, first() and last(), that will jump to the first

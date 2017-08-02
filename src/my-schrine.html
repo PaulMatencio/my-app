@@ -14,29 +14,14 @@
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="shrine-list.html">
 <link rel="import" href="shrine-detail.html">
-<+--link rel="import" href="my-new-view.html"-->
+
 <dom-module id="my-shrine">
   <template>
     <style include="shared-styles">
+    <style>
       :host {
         display: block;
         margin: 0;
-      }
-
-      app-header {
-        background-color: rgba(255, 255, 255, 0.95);
-        --app-header-shadow: {
-          box-shadow: inset 0px 5px 6px -3px rgba(0, 0, 0, 0.2);
-          height: 10px;
-          bottom: -10px;
-          };
-      }
-      app-toolbar {
-          /* Toolbar is the main header, so give it some color */
-          background-color: #1E88E5;
-          font-family: 'Roboto', Helvetica, sans-serif;
-          color: white;
-          --app-toolbar-font-size: 24px;
       }
 
       #mainToolbar {
@@ -225,8 +210,8 @@
           </app-drawer>
 
         <app-header-layout id="headerLayout">
-          <!--app-header fixed condenses effects="waterfall" scroll-target="scrollingRegion"-->
-          <app-header   fixed="[[smallScreen]]" condenses="[[!smallScreen]]" reveals="[[!smallScreen]]" effects="waterfall">
+
+          <app-header   fixed="[[smallScreen]]" condenses="[[!smallScreen]]" reveals="[[!smallScreen]]" effects="waterfall" slot="header">
             <app-toolbar id="mainToolbar">
               <div class="navItem leftItem">
                 <paper-icon-button icon="menu" drawer-toggle alt="Toogle navigation menu"></paper-icon-button>

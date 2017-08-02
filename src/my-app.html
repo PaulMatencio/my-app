@@ -1,13 +1,3 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
@@ -22,14 +12,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-item/paper-icon-item.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../bower_components/iron-icons/image-icons.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="my-icons.html">
 
-<link rel="import" href="my-image-carousel-custom-styles.html">
-<link rel="import" href="my-image-carousel-shared-styles.html">
+<!--link rel="import" href="my-image-carousel-custom-styles.html">
+<link rel="import" href="my-image-carousel-shared-styles.html"-->
 <link rel="import" href="my-show-git-custom-styles.html">
 <link rel="import" href="my-paper-icon-button-custom-styles.html">
 <!--link rel="stylesheet" href="my-image-carousel.css"-->
@@ -39,7 +30,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="lazy-import" href="my-view2.html">
 <link rel="lazy-import" href="my-view3.html">
 <link rel="lazy-import" href="my-new-view.html">
-<link rel="lazy-import" href="my-image-carousel.html">
+<!--link rel="lazy-import" href="my-image-carousel.html"-->
+<link rel="lazy-import" href="my-carousel.html"-->
 <link rel="lazy-import" href="my-show-git-repositories.html">
 <link rel="lazy-import" href="my-view404.html">
 
@@ -50,9 +42,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         --app-primary-color: #acacac;
         --app-secondary-color: #3c3c3c;
-        --app-toolbar-font-size: 25px;
+        --app-toolbar-font-size: 24px;
         --app-drawer-width: 300px;
         display: block;
+      }
+
+      app-toolbar {
+        font-family: 'Roboto', Helvetica, sans-serif;
+        color: white;
+        --app-toolbar-font-size: 24px;
       }
 
       app-drawer-layout:not([narrow]) [drawer-toggle] {
@@ -99,28 +97,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin:  0px 16px;
       }
 
+      @media (max-width: 640px ) {
+        app-toolbar {
+          --app-toolbar-font-size: 18px;
+        }
+
+      }
+
     </style>
 
     <!--  include custom style   -->
     <custome-style>
-        <style include="my-image-carousel-custom-styles"></style>
         <style include="my-show-git-custom-styles"></style>
         <style include="my-paper-icon-button-custom-styles"></style>
-        <style  include="iron-flex iron-flex-alignment"></style>
+        <!--style  include="iron-flex iron-flex-alignment"></style-->
     </custom-style>
 
-        <!--*  my-image-carousel style
-            Important for Performance
-        */ -->
-    <style  include="my-image-carousel-shared-styles"></style>>
-
+    <style include="shared-styles"></style>
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
         pattern="[[rootPattern]]:page"
         data="{{routeData}}"
-        tail="{{subroute}}"></app-route>
-
+        tail="{{subroute}}">
+    </app-route>
     <app-drawer-layout fullbleed drawer-width="288px" responsive-width="1288px" >
 
       <!-- Drawer content -->
@@ -128,9 +128,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="home" href="home" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="home" class="medium"></iron-icon><span>Home</span></paper-icon-item></a>
-          <a name="image-carousel" href="image-carousel" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="image:collections" class="medium"></iron-icon><span>Image Carousel</span></paper-icon-item></a>
+          <a name="carousel" href="carousel" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="image:collections" class="medium"></iron-icon><span>Image Carousel</span></paper-icon-item></a>
           <a name="show-git-repositories" href="show-git-repositories" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="av:web-asset" class="medium"></iron-icon><span>Show Git repositories</span></paper-icon-item></a>
-
           <a name="view2" href="view2" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="done"></iron-icon><span>View Two</span></paper-icon-item></paper-icon-item></a>
           <a name="view3" href="view3" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="done"></iron-icon><span>View Three</span></paper-icon-item></a>
           <a name="new-view" href="new-view" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="done"></iron-icon><span>New View</span></paper-icon-item></a>
@@ -153,15 +152,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             fallback-selection="view404"
             role="main">
           <my-home name="home"></my-home>
-          <my-image-carousel name="image-carousel" autoscroll appendimage  int=250 actions max=12000>
-              <!--img data-src="https://app-layout-assets.appspot.com/assets/bg1.jpg"-->
-              <img data-src="../images/png/NL1010536C2p15.png">
-              <img data-src="../images/png/NL1010536C2p12.png">
-              <img data-src="../images/png/NL1010536C2p16.png ">
-          </my-image-carousel>
-
+          <my-carousel name="carousel" title="My Awesome Carousel" int=250></my-carousel>
           <my-show-git-repositories name="show-git-repositories"> user="PaulMatencio"</my-show-git-repositories>
-
           <my-view2 name="view2"></my-view2>
           <my-view3 name="view3"></my-view3>
           <my-new-view name="new-view"></my-new-view>

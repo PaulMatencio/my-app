@@ -7,6 +7,9 @@
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/app-storage/app-indexeddb-mirror/app-indexeddb-mirror.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="icon-toggle.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-show-git-shared-styles.html">
@@ -14,22 +17,24 @@
 
 <dom-module id="my-show-git-repositories">
     <template>
-      <!-- Styles MUST be inside template -->
+      <!-- styles MUST be inside template -->
       <style include="shared-styles"></style>
       <style include="my-show-git-shared-styles"></style>
-
       <style>
 
-        :host {
+        :host  {
             display: block;
             padding : 0;
             line-height: 1.5;
-            background-color: var(--host-background-color, #efefef);
-        }
+            background-color:  white;
+            --app-primary-color: white;
+            --app-secondary-color: white;
+            --paper-input-container-input-color: white;
+         }
 
         .card {
           @apply --my-card;
-          background-color: var(--paper-indigo-50);
+          background-color: linear-gradient(left,var(--paper-indigo-50),white);
         }
 
         .hidden {
@@ -53,6 +58,9 @@
           color: var(--paper-blue-600);
         }
 
+        .show {
+         margin: 0 20%
+        }
         div > .title {
           margin: 0;
         }
@@ -69,13 +77,18 @@
           .card {
             height: auto;
             width: auto;
-           /*  background-color: white; */
+
           }
           .card:hover {
-              /* background-color: var(--paper-indigo-50); */
+
               -webkit-transform: scale(1.1);
               transform: scale(1.1);
           }
+
+          app-toolbar {
+            --app-toolbar-font-size: 15px;
+          }
+
         }
 
         @media (min-width: 641px ) and (max-width: 1024px) {
@@ -83,34 +96,30 @@
             width: 40%;
           }
         }
+
       </style>
-
-      <!-- import classes in an element -->
       <style include="iron-flex iron-flex-alignment"></style>
-
-      <!--  include custom style   -->
       <custome-style>
-        <style include="my-paper-icon-button-custom-styles"></style>
+        <style include="my-paper-icon-button-custom-styles">
+        </style>
       </custom-style>
 
-      <div class= "layout horizontal center-center title">
-            <div class="title"> <span> Show Github repositories</span> </div>
-            <div> <span> #[[numberRepos]] </span></div>
-      </div>
-      <div class="layout horizontal center-center input">
-          <iron-input  id="user" bind-value="{{user}}">
-            <input type="text" value="{{user::input}}">
-          </iron-input>
-           <paper-icon-button icon="search" title="Search on Github" class="light-blue"  on-click="_fire"></paper-icon-button>
-          <!--iron-icon class="icon" icon="search" on-click="_fire" ></iron-icon-->
+      <iron-media-query query="max-width: 640px" query-matches="{{smallScreen}}"></iron-media-query>
+      <dom-if if= [[!smallScreen]]>
+        <template>
+          <app-toolbar  id="MyRepos">
+              <div main-title spacer> Show Github repositories </div>
+              <div> Number of returned Repositories: [[numberRepos]] </div>
+          </app-toolbar>
+        </div>
+       </template>
+      </dom-if>
 
-          <iron-input  id="filter"  bind-value="{{filter}}">
-            <input type="text" placeholder= "filter name" value="{{filter::input}}">
-          </iron-input>
-      </div>
-
-      <!--iron-media-query query="(max-width: 768x)" query-matches="{{wide}}"></iron-media-query>
-      <iron-media-query query="(min-width: 769px) and (max-width: 1600px)" query-matches="{{wide1}}"></iron-media-query-->
+      <app-toolbar>
+          <paper-icon-button icon="search" title="Search user on Github" class="giant"  on-click="_fire" ></paper-icon-button>
+          <paper-input label="USER NAME" value="{{user}}" ></paper-input>
+          <paper-input spacer label="FILTER" value="{{filter}}"></paper-input>
+      </app-toolbar>
 
       <!-- on-response="_handleResponse" -->
       <iron-ajax
@@ -139,11 +148,12 @@
           <template is="dom-repeat" items="[[persistedData]]"  initial-count="10">
             <div  id="repos" class="card layout-flex">
                <div class="name">
-                 [[item.name]]<a href="[[item.html_url]]"> <paper-icon-button icon="link" title="Git url" class="light-blue"></paper-icon-button></a>
+                 [[item.name]]
+                 <a href="[[item.html_url]]"> <paper-icon-button icon="link" title="Github url" class="light-blue big"></paper-icon-button></a>
                    <dom-if if="[[item.has_pages]]">
                       <template>
                         <div>
-                          <a href="[[item.homepage]]"> <paper-icon-button icon="home" title="Home page"  class="light-blue"></paper-icon-button></a>
+                          <a href="[[item.homepage]]"> <paper-icon-button icon="home" title="Home page"  class="light-blue big"></paper-icon-button></a>
                         </div>
                       </template>
                    </dom-if>
@@ -200,6 +210,9 @@
               type: Number,
               computed : '_computedLength(repos)',
               reflectToAttribute: true
+            },
+            smallScreen: {
+              type: Boolean
             }
           }
         }

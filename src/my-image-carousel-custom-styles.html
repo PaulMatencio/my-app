@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <dom-module id="my-image-carousel-custom-styles">
   <template>
-    <custon-style>
+    <custom-style>
     <style>
       /* Define a document-wide default—will not override a :host rule in  */
         html {
@@ -18,13 +18,13 @@
           --my-carousel: {
               width: 90%;
               contain: content;
-              margin: 1% 5%;
+              margin: 2px 5%;
 
             };
           --my-image-carousel-after: {
               display: block;
               content: '';
-              padding-top: 65%; /* 4:3 = height is 75% of width */
+              padding-top: 60%; /* 4:3 = height is 75% of width */
             };
         }
       /* This rule will apply to the body of this html! */
@@ -36,6 +36,6 @@
           --icon-toggle-color: red;
         }
       </style>
-    <custon-style>
+    <custom-style>
   </template>
 <dom-module>
