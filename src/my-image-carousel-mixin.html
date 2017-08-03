@@ -24,9 +24,10 @@
         notify: true,
         reflectToAttribute: true,
       },
-        /**
+      /**
         * Boolean value to decide if images should change automatically.
-        */
+     */
+
       autoscroll: {
         type: Boolean,
         value: false,
@@ -35,10 +36,12 @@
         observer: '_autoScroll'
       },
 
+      /*
       images: {
         type : Array,
         value: getimages()
       },
+      */
 
         /**
             Append new images to the images array attribute
@@ -122,7 +125,7 @@
         /**
         * used to save the current interval
         */
-      _currentInterval: {
+      currentInterval: {
           type: Object,
           reflectToAttribute: true
         },
@@ -177,40 +180,19 @@
           if (!this.selected || this.selected.parentElement !== this) {
             this.selected = this.firstElementChild;
           }
-        }
+    }
 
     _autoScroll() {
-      if ( typeof(this.currentInterval)  !=  "undefined ") {
-            clearInterval(this.currentInterval)
-      }
-      console.log("autoscroll",this.int);
-      if (this.autoscroll) {
-        this.currentInterval = setInterval(_ => this.next_image(), this.int);
-            console.log(this.currentInterval);
-        }
-      }
 
-      /*  this.info is a parent attribute */
+    }
 
-      _titleChanged() {
+    /*  this.info is a parent attribute */
+
+    _titleChanged() {
         this.label = this._title ;
-      }
+    }
 
   }; // end of superclass extension
 
-  function  getimages() {
-    /* return ["JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
-          "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png",
-          "NL1010536C2p17.png","NL1010536C2p9.png"];
-          */
-    return ["JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
-          "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png",
-          "NL1010536C2p17.png","NL1010536C2p9.png","JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png",
-          "JP2004137757Ap13.png","JP2004137757Ap1.png","NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png",
-          "NL1010536C2p16.png","NL1010536C2p8.png","NL1010536C2p17.png","NL1010536C2p9.png","JP2004137757Ap10.png",
-          "JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
-          "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png",
-          "NL1010536C2p17.png","NL1010536C2p9.png"];
-  }
 
 </script>

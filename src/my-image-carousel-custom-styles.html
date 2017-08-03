@@ -2,12 +2,12 @@
 <dom-module id="my-image-carousel-custom-styles">
   <template>
     <custom-style>
-    <style>
+      <style>
       /* Define a document-wide default—will not override a :host rule in  */
         html {
           --iron-icon-stroke-color: #6495ED;
           --icon-toggle-outline-color: #6495ED;
-      }
+        }
       /* Override the value specified in demo-element */
         my-image-carousel {
           --iron-icon-fill-color: #6495ED;
@@ -15,17 +15,20 @@
           --iron-icon-height: 24px;
           --iron-icon-width: 24px;
           --icon-toggle-pressed-color: green;
+
           --my-carousel: {
               width: 90%;
               contain: content;
               margin: 2px 5%;
 
             };
+
           --my-image-carousel-after: {
               display: block;
               content: '';
-              padding-top: 60%; /* 4:3 = height is 75% of width */
+              padding-top: 60%;
             };
+
         }
       /* This rule will apply to the body of this html! */
         body {

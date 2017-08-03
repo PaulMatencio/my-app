@@ -19,18 +19,17 @@
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="my-icons.html">
 
-<!--link rel="import" href="my-image-carousel-custom-styles.html">
-<link rel="import" href="my-image-carousel-shared-styles.html"-->
+<link rel="import" href="my-image-carousel-custom-styles.html">
+<link rel="import" href="my-image-carousel-shared-styles.html">
 <link rel="import" href="my-show-git-custom-styles.html">
 <link rel="import" href="my-paper-icon-button-custom-styles.html">
 <!--link rel="stylesheet" href="my-image-carousel.css"-->
-
 
 <link rel="lazy-import" href="my-home.html">
 <link rel="lazy-import" href="my-view2.html">
 <link rel="lazy-import" href="my-view3.html">
 <link rel="lazy-import" href="my-new-view.html">
-<!--link rel="lazy-import" href="my-image-carousel.html"-->
+<link rel="lazy-import" href="my-image-carousel.html">
 <link rel="lazy-import" href="my-carousel.html"-->
 <link rel="lazy-import" href="my-show-git-repositories.html">
 <link rel="lazy-import" href="my-view404.html">
@@ -108,12 +107,15 @@
 
     <!--  include custom style   -->
     <custome-style>
+        <style include="my-image-carousel-custom-styles"></style>
         <style include="my-show-git-custom-styles"></style>
         <style include="my-paper-icon-button-custom-styles"></style>
         <!--style  include="iron-flex iron-flex-alignment"></style-->
     </custom-style>
 
     <style include="shared-styles"></style>
+    <style include="my-image-carousel-shared-styles"></style>
+
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
@@ -128,7 +130,8 @@
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="home" href="home" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="home" class="medium"></iron-icon><span>Home</span></paper-icon-item></a>
-          <a name="carousel" href="carousel" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="image:collections" class="medium"></iron-icon><span>Image Carousel</span></paper-icon-item></a>
+          <a name="carousel" href="carousel" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="image:collections" class="medium"></iron-icon><span>My Carousel</span></paper-icon-item></a>
+          <a name="image-carousel" href="image-carousel" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="image:collections" class="medium"></iron-icon><span>My Image Carousel</span></paper-icon-item></a>
           <a name="show-git-repositories" href="show-git-repositories" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="av:web-asset" class="medium"></iron-icon><span>Show Git repositories</span></paper-icon-item></a>
           <a name="view2" href="view2" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="done"></iron-icon><span>View Two</span></paper-icon-item></paper-icon-item></a>
           <a name="view3" href="view3" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="done"></iron-icon><span>View Three</span></paper-icon-item></a>
@@ -152,7 +155,59 @@
             fallback-selection="view404"
             role="main">
           <my-home name="home"></my-home>
-          <my-carousel name="carousel" title="My Awesome Carousel" int=250 autoscroll appendimage></my-carousel>
+
+          <my-carousel name="carousel" title="My Awesome Carousel" int=500 max=12000  appendimage></my-carousel>
+          <my-image-carousel name="image-carousel"  int=250 max=1200  autoscroll>
+              <img data-src="../images/png/JP2004137757Ap10.png">
+              <img data-src="../images/png/JP2004137757Ap11.png">
+              <img data-src="../images/png/JP2004137757Ap13.png">
+              <img data-src="../images/png/NL1010536C2p13.png">
+              <img data-src="../images/png/NL1010536C2p13.png">
+              <img data-src="../images/png/NL1010536C2p6.png">
+              <img data-src="../images/png/JP2004137757Ap10.png">
+              <img data-src="../images/png/JP2004137757Ap11.png">
+              <img data-src="../images/png/JP2004137757Ap13.png">
+              <img data-src="../images/png/NL1010536C2p13.png">
+              <img data-src="../images/png/NL1010536C2p13.png">
+              <img data-src="../images/png/NL1010536C2p6.png">
+              <img data-src="../images/png/NL1010536C2p10.png">
+              <img data-src="../images/png/NL1010536C2p2.png">
+              <img data-src="../images/png/JP2004137757Ap13.png">
+              <img data-src="../images/png/NL1010536C2p11.png">
+              <img data-src="../images/png/NL1010536C2p3.png">
+              <img data-src="../images/png/JP2004137757Ap1.png">
+              <img data-src="../images/png/NL1010536C2p12.png">
+              <img data-src="../images/png/NL1010536C2p4.png">
+              <img data-src="../images/png/JP2004137757Ap2.png">
+              <img data-src="../images/png/NL1010536C2p13.png">
+              <img data-src="../images/png/NL1010536C2p5.png">
+              <img data-src="../images/png/JP2004137757Ap3.png">
+              <img data-src="../images/png/NL1010536C2p14.png">
+              <img data-src="../images/png/NL1010536C2p6.png">
+              <img data-src="../images/png/JP2004137757Ap4.png">
+              <img data-src="../images/png/NL1010536C2p15.png">
+              <img data-src="../images/png/NL1010536C2p7.png">
+              <img data-src="../images/png/JP2004137757Ap5.png">
+              <img data-src="../images/png/NL1010536C2p16.png">
+              <img data-src="../images/png/NL1010536C2p8.png">
+              <img data-src="../images/png/JP2004137757Ap6.png">
+              <img data-src="../images/png/NL1010536C2p17.png">
+              <img data-src="../images/png/NL1010536C2p9.png">
+              <img data-src="../images/png/JP2004137757Ap7.png">
+              <img data-src="../images/png/NL1010536C2p18.png">
+              <img data-src="../images/png/JP2004137757Ap10.png">
+              <img data-src="../images/png/JP2004137757Ap11.png">
+              <img data-src="../images/png/JP2004137757Ap13.png">
+              <img data-src="../images/png/NL1010536C2p13.png">
+              <img data-src="../images/png/NL1010536C2p13.png">
+              <img data-src="../images/png/NL1010536C2p6.png">
+              <img data-src="../images/png/JP2004137757Ap10.png">
+              <img data-src="../images/png/JP2004137757Ap11.png">
+              <img data-src="../images/png/JP2004137757Ap13.png">
+              <img data-src="../images/png/NL1010536C2p13.png">
+              <img data-src="../images/png/NL1010536C2p13.png">
+              <img data-src="../images/png/NL1010536C2p6.png">
+          </my-image-carousel>
           <my-show-git-repositories name="show-git-repositories"> user="PaulMatencio"</my-show-git-repositories>
           <my-view2 name="view2"></my-view2>
           <my-view3 name="view3"></my-view3>
@@ -189,7 +244,6 @@
 
       constructor() {
         super();
-
         // Get root pattern for app-route, for more info about `rootPath` see:
         // https://www.polymer-project.org/2.0/docs/upgrade#urls-in-templates
         this.rootPattern = (new URL(this.rootPath)).pathname;

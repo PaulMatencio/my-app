@@ -53,7 +53,7 @@
     <dom-if>
 
     <!-- images are added by methid _appendImages( images) images is an array -->
-    <my-image-carousel name="image-carousel"  autoscroll$= "{{autoscroll}}" appendimage label="{{label}}" int="{{int}}"  max="{{max}}">
+    <my-image-carousel name="image-carousel"  autoscroll$= "{{autoscroll}}" appendimage label="{{label}}" int="{{int}}" actions max="{{max}}">
     </my-image-carousel>
 
     <app-toolbar id="MyCarousel">
@@ -86,7 +86,7 @@
 
   <script>
 
-  class MyCarousel extends MyMixin(Polymer.Element)  {
+  class MyCarousel extends MyImageCarousel  {
 
     static get is() { return 'my-carousel'; }
 
@@ -98,14 +98,14 @@
           value:"My Carousel"
         },
 
+        images: {
+          type: Array,
+          value: getimages()
+        },
+
         carousel: {
           type: Object
         },
-
-        images: {
-          type : Array,
-          value: getimages()
-        }
      }
    }
 
@@ -115,63 +115,63 @@
 
     ready() {
       super.ready();
-      this.carousel = this.shadowRoot.querySelector("my-image-carousel");
-      console.log(this.carousel);
-      if (this.appendimage) {
-          this._appendImage(this.carousel);
-      }
-    }
+      Polymer.RenderStatus.afterNextRender(this, function() {
+        this.carousel = this.shadowRoot.querySelector("my-image-carousel");
+        if (this.appendimage) {
+           this.appendImage(this.carousel);
+       }
+       });
+     }
 
     next_image() {
-      this.carousel.next_image();
+      super.next_image();
     }
 
     previous_image() {
-       this.carousel.previous_image();
+       super.previous_image();
     }
 
     first_image() {
-       this.carousel.first_image();
+       super.first_image();
     }
 
     last_image() {
-      this.carousel.last_image();
+      super.last_image();
     }
 
     increase_interval() {
-      this.carousel.increase_interval();
+      super.increase_interval();
     }
 
     decrease_interval() {
-      this.carousel.decrease_interval();
-
+    super.decrease_interval();
     }
 
     set_interval() {
-      this.carousel.set_interval();
+    super.set_interval();
     }
 
     add_to_queue() {
-      this.carousel.add_to_queue();
+      super.add_to_queue();
     }
 
     remove_from_queue() {
-      this.carousel.remove_from_queue();
+      super.remove_from_queue();
     }
 
     download_images() {
-      this.carousel.download_images();
+      super.download_images();
     }
 
 
-   _appendImage(element) {
-      this.images.forEach( function(image){
-        var img  = document.createElement("img");
-        img.setAttribute('data-src', this.hosts + image );
-        element.appendChild(img);
-      },this);
-    }
-
+    appendImage(element) {
+      console.log(element);
+       this.images.forEach( function(image){
+         var img  = document.createElement("img");
+         img.setAttribute('data-src', this.hosts + image );
+         element.appendChild(img);
+       },this);
+     }
 
   }
 
