@@ -1,3 +1,4 @@
+<!--   Based on Codelabs for building a Ploymer 2.0 carsousel -->
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
@@ -35,7 +36,8 @@
        * to the left of ::slotted(). In this case, we will use div > ::slotted().
       */
 
-      /* slot replace content */
+      /* slot replace content
+      */
       div > ::slotted(:not([selected])) {
         display: none;
       }
@@ -81,7 +83,6 @@
         border-radius: 25%;
         background-color:  white;
         cursor: pointer;
-        /* @apply --navigation-icon-mixin; */
       }
 
       .first-icon {
@@ -186,7 +187,7 @@
           </template>
         </div>
 
-        <div class="navigation-icons toggle-icon">
+        <!--div class="navigation-icons toggle-icon">
           <dom-if if="[[autoscroll]]">
             <template>
               <span class="stop"> </span>
@@ -208,7 +209,7 @@
             <paper-icon-button icon="av:remove-from-queue" class="light-blue" title="Remove image from download"  hidden$="[[autoscroll]]" on-click="remove_from_queue"></paper-icon-button>
             <paper-icon-button icon="file-download" class="light-blue"  title="Download selected images" hidden$="[[autoscroll]]" on-click="download_images"></paper-icon-button>
             <paper-icon-button icon="av:fast-forward" class="light-blue" title="Last image" on-click="last_image"></paper-icon-button>
-        </div>
+        </div-->
       </template>
     <dom-if>
 
@@ -216,7 +217,7 @@
  <script>
      /** Extend Polymer.Element base class
        *  class MyCarousel extends Polymer.Element
-       */
+     */
     class MyImageCarousel extends MyMixin(Polymer.Element)   {
       static get is() { return 'my-image-carousel' }
       constructor() {
@@ -233,25 +234,13 @@
 
       _selectedChanged(selected , oldSelected ) {
           super._selectedChanged(selected, oldSelected);
-          /**
-            * Polymer builds a static map of node IDs, this.$, that allows you to
-            * quickly access elements in the <template> with the corresponding id.
-            * For more details,
-            * see https://www.polymer-project.org/2.0/docs/devguide/dom-template#node-finding.
-            */
           if (selected) {
-
             if (selected !== undefined) {
               var paths =  selected.src.split("/") ;
               this._title = paths[paths.length -1];
             }
-
             var previous = selected.previousElementSibling;
             var next = selected.nextElementSibling;
-            /*
-            * this.$.prevBtn.disabled = !selected.previousElementSibling;
-            * this.$.nextBtn.disabled = !selected.nextElementSibling;
-            */
             this.$.prevBtn.disabled = !previous ;
             this.$.nextBtn.disabled = !next;
             /* lazy-load images */
@@ -412,6 +401,7 @@
         if (this.intl > this.max) {
           this.int = this.max;
         }
+        console.log(this.interval);
         this._autoScroll();
       }
 
@@ -425,7 +415,6 @@
       }
 
       set_interval() {
-        console.log(this.int) ;
         if (this.int < this._step) {
           this.int = this._step;
         }
@@ -447,7 +436,6 @@
           this.splice("Images",index,1) ;
         }
       }
-
 
       download_images() {
         var element = this.shadowRoot.querySelector("#download");

@@ -1,11 +1,13 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-image-carousel-custom-styles.html">
 <link rel="import" href="my-image-carousel-shared-styles.html">
 <link rel="import" href="my-paper-icon-button-custom-styles.html">
 <link rel="import" href="icon-toggle.html">
+<link rel="import" href="my-image-carousel-mixin.html">
 <link rel="import" href="my-image-carousel.html">
 
 <dom-module id="my-carousel">
@@ -17,28 +19,6 @@
         padding: 10px;
       }
 
-      .toggle-icon{
-        right: calc(var(--iron-icon-width,24px));
-        bottom:  5px;
-      }
-
-      .navigation-icons {
-        @apply --layout;
-        @apply --layout-center;
-        display: inline-flex;
-        position: absolute;
-        height: calc(var(--iron-icon-height, 24px) + 5px);
-        background: var(--image-carousel-navigation-icon-color, rgba(255, 255, 255, 1));
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                    0 1px 5px 0 rgba(0, 0, 0, 0.12),
-                    0 3px 1px -2px rgba(0, 0, 0, 0.2);
-        transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-        border-radius: 25%;
-        background-color:  white;
-        cursor: pointer;
-        /* @apply --navigation-icon-mixin; */
-      }
-      
       .toggle-icon:hover .stop::after{
         position: relative;
         content: 'Stop scrolling';
@@ -73,11 +53,11 @@
     <dom-if>
 
     <!-- images are added by methid _appendImages( images) images is an array -->
-    <my-image-carousel name="image-carousel" appendimage label="{{label}}" int="{{int}}" actions max="{{max}}">
+    <my-image-carousel name="image-carousel"  autoscroll$= "{{autoscroll}}" appendimage label="{{label}}" int="{{int}}" actions max="{{max}}">
     </my-image-carousel>
 
     <app-toolbar id="MyCarousel">
-      <icon-toggle  toggle-icon="arrow-forward" pressed="{{autoscroll}}"></icon-toggle>
+
       <paper-icon-button icon="av:fast-rewind" class="light-blue"  title="Fist image" on-click="first_image"></paper-icon-button>
       <paper-icon-button icon="add-circle" class="light-blue" title="Increase interval" hidden$="[[!autoscroll]]" on-click="increase_interval"  ></paper-icon-button>
       <paper-icon-button icon="remove-circle" class="light-blue" title="Reduce interval" hidden$="[[!autoscroll]]" on-click="decrease_interval"></paper-icon-button>
@@ -85,71 +65,100 @@
       <paper-icon-button icon="av:remove-from-queue" class="light-blue" title="Remove image from download"  hidden$="[[autoscroll]]" on-click="remove_from_queue"></paper-icon-button>
       <paper-icon-button icon="file-download" class="light-blue"  title="Download selected images" hidden$="[[autoscroll]]" on-click="download_images"></paper-icon-button>
       <paper-icon-button icon="av:fast-forward" class="light-blue" title="Last image" on-click="last_image"></paper-icon-button>
+
+      <div class="toggle-icon">
+        <icon-toggle  toggle-icon="arrow-forward" pressed="{{autoscroll}}"></icon-toggle>
+        <dom-if if="[[autoscroll]]">
+          <template>
+            <span class="stop"> </span>
+          </template>
+        </dom-if>
+        <dom-if if="[[!autoscroll]]">
+          <template>
+            <span class="start">  </span>
+          </template>
+        </dom-if>
+
+      </div>
     </app-toolbar>
 
   </template>
 
   <script>
 
-  class MyCarousel extends Polymer.Element {
-    static get is() { return 'my-carousel'; }
-    static get properties() {
-      return {
+  class MyCarousel extends MyMixin(Polymer.Element)  {
 
+    static get is() { return 'my-carousel'; }
+
+    static get properties() {
+
+      return {
         title: {
           type: String,
           value:"My Carousel"
         },
 
-        label: {
-          type: String,
-          value:"",
-          notify: true
+        carousel: {
+          type: Object
         },
+     }
+   }
 
-        images: {
-            type : Array,
-            value: getimages(),
-            notify:true
-        },
-
-        int: {
-          type: Number,
-          value: 500,
-          notify: true
-        },
-        max: {
-          type: Number,
-          value: 12000,
-          notify: true
-        },
-
-        hosts: {
-            type: String,
-            // value: "https://app-layout-assets.appspot.com/",
-            value: "../images/png/",
-            notify: true
-        },
-        autoscroll: {
-          type: Boolean,
-          value: false,
-          notify: true
-        }
-
-
-      };
+    constructor() {
+      super();
     }
 
     ready() {
       super.ready();
+      this.carousel = this.shadowRoot.querySelector("my-image-carousel");
+      if (this.appendimage) {
+        this._appendImage(this.carousel);
+      }
+    }
 
-      var element = this.shadowRoot.querySelector("my-image-carousel");
-      this._appendImage(element);
+    next_image() {
+      this.carousel.next_image();
+    }
 
+    previous_image() {
+       this.carousel.previous_image();
+    }
+
+    first_image() {
+       this.carousel.first_image();
+    }
+
+    last_image() {
+      this.carousel.last_image();
+    }
+
+    increase_interval() {
+      this.carousel.increase_interval();
+    }
+
+    decrease_interval() {
+      this.carousel.decrease_interval();
 
     }
 
-    _appendImage(element) {
+    set_interval() {
+      this.carousel.set_interval();
+    }
+
+    add_to_queue() {
+      this.carousel.add_to_queue();
+    }
+
+    remove_from_queue() {
+      this.carousel.remove_from_queue();
+    }
+
+    download_images() {
+      this.carousel.download_images();
+    }
+
+
+   _appendImage(element) {
       this.images.forEach( function(image){
         var img  = document.createElement("img");
         img.setAttribute('data-src', this.hosts + image );
@@ -157,9 +166,10 @@
       },this);
     }
 
-   }
 
-   function  getimages() {
+  }
+
+  function  getimages() {
     return ["JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
           "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png",
           "NL1010536C2p17.png","NL1010536C2p9.png","JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png",

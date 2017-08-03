@@ -1,4 +1,3 @@
-
 <script>
   /** @polymerMixin */
   const MyMixin = superclass => class extends superclass {
@@ -8,10 +7,10 @@
         /**
         * Currently selected
         */
-        selected: {
-          type: Object,
-          observer: '_selectedChanged'
-        },
+      selected: {
+        type: Object,
+        observer: '_selectedChanged'
+      },
 
       _title: {
         type: String,
@@ -29,17 +28,17 @@
         * Boolean value to decide if images should change automatically.
         */
       autoscroll: {
-          type: Boolean,
-          value: false,
-          notify: true,
-          reflectToAttribute: true,
-          observer: '_autoScroll'
-        },
+        type: Boolean,
+        value: false,
+        notify: true,
+        reflectToAttribute: true,
+        observer: '_autoScroll'
+      },
 
       images: {
-          type : Array,
-          value: getimages()
-        },
+        type : Array,
+        value: getimages()
+      },
 
         /**
             Append new images to the images array attribute
@@ -184,6 +183,7 @@
       if ( typeof(this.currentInterval)  !=  "undefined ") {
             clearInterval(this.currentInterval)
       }
+      console.log("autoscroll",this.int);
       if (this.autoscroll) {
         this.currentInterval = setInterval(_ => this.next_image(), this.int);
             console.log(this.currentInterval);
