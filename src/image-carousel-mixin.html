@@ -43,9 +43,9 @@
       },
       */
 
-        /**
-            Append new images to the images array attribute
-            */
+      /**
+      *      Append new images to the images array attribute
+      */
       appendimage: {
           type: Boolean,
           value: false,
@@ -53,10 +53,10 @@
           reflectToAttribute: true
         },
 
-        /**
-        * Transition ( animation) between images
-        * default off  for scrolling forward
-        */
+      /**
+       * Transition ( animation) between images
+       * default off  for scrolling forward
+       */
       transition: {
           type: Boolean,
           value: false,
@@ -134,7 +134,7 @@
         * used to display the action bar
         * This will only work if autoscroll is set to true
         */
-      actions: {
+      controls: {
           type: Boolean,
           notify: true,
           value: false,
@@ -189,7 +189,8 @@
     /*  this.info is a parent attribute */
 
     _titleChanged() {
-        this.label = this._title ;
+        var index = this._title.indexOf(".")
+        this.label = (index > 0 ? this._title.substring(0,index): this._title );
     }
 
   }; // end of superclass extension

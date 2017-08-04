@@ -1,0 +1,83 @@
+<!-- personalized  style -->
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<dom-module id="show-git-styles">
+  <template>
+    <style>
+
+    :host  {
+        display: block;
+        padding : 0;
+        line-height: 1.5;
+        background-color:  white;
+        --app-primary-color: white;
+        --app-secondary-color: white;
+        --paper-input-container-input-color: white;
+     }
+
+    .card {
+      @apply --my-card;
+      background-color: linear-gradient(left,var(--paper-indigo-50),white);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .name {
+      @apply --my-important;
+      display: inline-flex;
+      margin-bottom: 10px;
+    }
+
+    .language {
+        @apply --my-important;
+        color: var(--paper-blue-900);
+    }
+
+    .title {
+      @apply --my-title;
+      background-color: var(--paper-indigo-50);
+      color: var(--paper-blue-600);
+    }
+
+    .show {
+     margin: 0 20%
+    }
+    div > .title {
+      margin: 0;
+    }
+
+    a {
+      display: block;
+    }
+
+    div  a {
+      display: inline-flex;
+    }
+
+    @media (max-width: 640px ) {
+      .card {
+        height: auto;
+        width: auto;
+
+      }
+      .card:hover {
+
+          -webkit-transform: scale(1.1);
+          transform: scale(1.1);
+      }
+
+      app-toolbar {
+        --app-toolbar-font-size: 15px;
+      }
+    }
+
+    @media (min-width: 641px ) and (max-width: 1024px) {
+      .card {
+        width: 40%;
+      }
+    }
+
+    </style>
+  </template>
+</dom-module>

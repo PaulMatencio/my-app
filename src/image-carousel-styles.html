@@ -1,0 +1,123 @@
+<!-- personalized  style -->
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<dom-module id="image-carousel-styles">
+  <template>
+    <style>
+
+      :host {
+        display: block;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /**
+      * In a shadow root, the :host CSS selector refers to the host of the
+      * shadow root (i.e. the <my-carousel> element), and the :slotted() selector
+      * refers to the immediate children that are in that slot.
+      * Though this is not required with the native implementation, one of
+      * the limitations of the Shady DOM polyfill is that you must have a selector
+      * to the left of ::slotted(). In this case, we will use div > ::slotted().
+      */
+
+      /* slot replace content
+      */
+      div > ::slotted(:not([selected])) {
+        display: none;
+      }
+
+      button {
+        position: absolute;
+        top: calc(50% - 20px);
+        padding: 0;
+        line-height: 40px;
+        border: none;
+        background: none;
+        color: #DDD;
+        font-size: 40px;
+        font-weight: bold;
+        opacity: 0.9;
+      }
+
+      button:hover,
+      button:focus {
+        opacity: 1;
+      }
+
+      #prevBtn {
+        left: calc(var(--iron-icon-width, 24px)/2);
+      }
+
+      #nextBtn {
+        right: calc(var(--iron-icon-width, 24px)/2);
+      }
+
+      /* NAVIGATION ICONS */
+      .navigation-icons {
+        @apply --layout;
+        @apply --layout-center;
+        display: inline-flex;
+        position: absolute;
+        height: calc(var(--iron-icon-height, 24px) + 5px);
+        background: var(--image-carousel-navigation-icon-color, rgba(255, 255, 255, 1));
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                    0 1px 5px 0 rgba(0, 0, 0, 0.12),
+                    0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 25%;
+        background-color:  white;
+        cursor: pointer;
+      }
+
+      .first-icon {
+        left: calc(50% - var(--paper-icon-button-big-size,48px)*3);
+        bottom: 5px;
+        @apply --left-navigation-icon-mixin;
+      }
+
+      .bar-icon {
+        padding: calc(var(--iron-icon-width) / 4);
+      }
+
+      .toggle-icon{
+        right: calc(var(--iron-icon-width,24px));
+        bottom:  5px;
+      }
+
+      .info {
+        position: absolute;
+        display: inline-flex;
+        left:  calc(var(--iron-icon-width,24px));
+        top: 0;
+        font-size: 14px;
+        padding: 0;
+        margin: 0;
+      }
+
+      .download {
+        position: absolute;
+        display: inline-block;
+        left:  70%;
+        top: calc(var(--iron-icon-width, 24px)/2);
+        font-size: 14px;
+        padding: 0;
+        margin: 0;
+      }
+
+      button[disabled] {
+        opacity: 0.3;
+        color: red;
+      }
+
+      span {
+        padding: 2px;
+      }
+
+      @media (max-width: 1288px) {
+        my-image-carousel::after {
+          padding-top: 70%;
+        }
+      }
+
+    </style>
+  </template>
+</dom-module>

@@ -10,139 +10,20 @@
 <link rel="import" href="icon-toggle.html">
 <!--link rel="import" href="/bower_components/polymer/lib/utils/flattened-nodes-observer.html"-->
 <!--link rel="import" href="bower_components/polymer/lib/elements/dom-repeat.html"-->
-<link rel="import" href="my-image-carousel-mixin.html">
-<link rel="import" href="my-paper-icon-button-custom-styles.html">
+<link rel="import" href="image-carousel-mixin.html">
+<link rel="import" href="image-carousel-styles.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="paper-icon-button-custom-styles.html">
 
 <dom-module id="my-image-carousel">
   <template>
-    <!-- Styles MUST be inside template -->
     <custome-style>
-      <style include="my-paper-icon-button-custom-styles"></style>
+      <style include="paper-icon-button-custom-styles"></style>
     </custom-style>
 
     <style include="shared-styles"></style>
-    <style>
-
-      :host {
-        display: block;
-        position: relative;
-        overflow: hidden;
-      }
-
-      /**
-       * In a shadow root, the :host CSS selector refers to the host of the
-       * shadow root (i.e. the <my-carousel> element), and the :slotted() selector
-       * refers to the immediate children that are in that slot.
-       * Though this is not required with the native implementation, one of
-       * the limitations of the Shady DOM polyfill is that you must have a selector
-       * to the left of ::slotted(). In this case, we will use div > ::slotted().
-      */
-
-      /* slot replace content
-      */
-      div > ::slotted(:not([selected])) {
-        display: none;
-      }
-
-      button {
-        position: absolute;
-        top: calc(50% - 20px);
-        padding: 0;
-        line-height: 40px;
-        border: none;
-        background: none;
-        color: #DDD;
-        font-size: 40px;
-        font-weight: bold;
-        opacity: 0.9;
-      }
-
-      button:hover,
-      button:focus {
-        opacity: 1;
-      }
-
-      #prevBtn {
-        left: calc(var(--iron-icon-width, 24px)/2);
-      }
-
-      #nextBtn {
-        right: calc(var(--iron-icon-width, 24px)/2);
-      }
-
-      /* NAVIGATION ICONS */
-      .navigation-icons {
-        @apply --layout;
-        @apply --layout-center;
-        display: inline-flex;
-        position: absolute;
-        height: calc(var(--iron-icon-height, 24px) + 5px);
-        background: var(--image-carousel-navigation-icon-color, rgba(255, 255, 255, 1));
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                    0 1px 5px 0 rgba(0, 0, 0, 0.12),
-                    0 3px 1px -2px rgba(0, 0, 0, 0.2);
-        transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-        border-radius: 25%;
-        background-color:  white;
-        cursor: pointer;
-      }
-
-      .first-icon {
-        left: calc(50% - var(--iron-icon-width)*2 - (var(--iron-icon-width) / 4 ));
-        bottom: 5px;
-        @apply --left-navigation-icon-mixin;
-      }
-
-      .bar-icon {
-        padding: calc(var(--iron-icon-width) / 4);
-      }
-
-      .toggle-icon{
-        right: calc(var(--iron-icon-width,24px));
-        bottom:  5px;
-      }
-      
-      .info {
-        position: absolute;
-        display: inline-flex;
-        left:  calc(var(--iron-icon-width,24px));
-        top: 0;
-        font-size: 14px;
-        padding: 0;
-        margin: 0;
-      }
-
-      .download {
-        position: absolute;
-        display: inline-block;
-        left:  70%;
-        top: calc(var(--iron-icon-width, 24px)/2);
-        font-size: 14px;
-        padding: 0;
-        margin: 0;
-      }
-
-      button[disabled] {
-        opacity: 0.3;
-        color: red;
-      }
-
-      span {
-        padding: 2px;
-      }
-
-
-
-      @media (max-width: 1288px) {
-        my-image-carousel::after {
-          padding-top: 70%;
-        }
-      }
-
-    </style>
-
-    <!--  include custom style   -->
-
+    <style include="image-carousel-styles"></style>
+    
 
     <div>
       <slot></slot>
@@ -151,10 +32,9 @@
     <button id="prevBtn" on-click="previous_image">&#x276E;</button>
     <button id="nextBtn" on-click="next_image">&#x276F;</button>
 
-    <dom-if if="[[actions]]">
+    <dom-if if="[[controls]]">
       <template>
         <div class="info">
-          <!--p> {{ _title }} </p-->
           <dom-if if="[[autoscroll]]">
             <template>
               <paper-slider value="{{int}}" max="[[max]]" step="[[_step]]" max-marker="40" on-tap="set_interval" ></paper-slider>
@@ -207,23 +87,10 @@
       constructor() {
         super();
       }
-      /*
-      static get properties() {
-        return: {
-          autoscroll: {
-            type: Boolean,
-            value: false,
-            notify: true,
-            reflectToAttribute: true,
-            observer: '_autoScroll'
-          }
 
-        }
-     }
-     */
       ready() {
         super.ready();
-        console.log("image carousel ready");
+        console.log("controls:",this.controls);
         requestAnimationFrame(this._installListeners.bind(this));
       }
 
@@ -274,7 +141,6 @@
         */
 
       _loadImage(img) {
-        /* console.log(img) */
         if (img && !img.src) {
         img.src = img.getAttribute('data-src');
         }
@@ -285,7 +151,6 @@
         if ( elem != undefined ) {
           elem.style.display = 'block';
           elem.style.transition = transition ? 'transform 0.05s' : '';
-          /*elem.style.transition = transition ? 'transform' + this.transition+'s' : '';*/
           elem.style.transform = 'translate3d(' + x + 'px, 0, 0)';
         }
       }
@@ -363,10 +228,6 @@
           * star the transition
           */
           this.selected = elem;
-          /*
-          this._translateX(oldSelected,-this.offsetWidth,this.transition);
-          this._translateX(elem, 0, this.transition);
-          */
           this._translateX(oldSelected,-this.offsetWidth,false);
           this._translateX(elem, 0, false);
 
@@ -380,8 +241,6 @@
         }
 
       }
-
-
 
       /**
       * define two more methods, first() and last(), that will jump to the first
@@ -408,10 +267,9 @@
 
       increase_interval() {
         this.int += this._step;
-        if (this.intl > this.max) {
+        if (this.int > this.max) {
           this.int = this.max;
         }
-        console.log(this.interval);
         this._autoScroll();
       }
 
@@ -471,7 +329,6 @@
     /**
     * Register custom element definition using standard platform API
     */
-
     customElements.define(MyImageCarousel.is, MyImageCarousel);
 
  </script>

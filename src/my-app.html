@@ -19,11 +19,10 @@
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="my-icons.html">
 
-<link rel="import" href="my-image-carousel-custom-styles.html">
-<link rel="import" href="my-image-carousel-shared-styles.html">
-<link rel="import" href="my-show-git-custom-styles.html">
-<link rel="import" href="my-paper-icon-button-custom-styles.html">
-<!--link rel="stylesheet" href="my-image-carousel.css"-->
+<link rel="import" href="image-carousel-custom-styles.html">
+<link rel="import" href="image-carousel-shared-styles.html">
+<link rel="import" href="show-git-custom-styles.html">
+<link rel="import" href="paper-icon-button-custom-styles.html">
 
 <link rel="lazy-import" href="my-home.html">
 <link rel="lazy-import" href="my-view2.html">
@@ -107,14 +106,14 @@
 
     <!--  include custom style   -->
     <custome-style>
-        <style include="my-image-carousel-custom-styles"></style>
-        <style include="my-show-git-custom-styles"></style>
-        <style include="my-paper-icon-button-custom-styles"></style>
+        <style include="image-carousel-custom-styles"></style>
+        <style include="show-git-custom-styles"></style>
+        <style include="paper-icon-button-custom-styles"></style>
         <!--style  include="iron-flex iron-flex-alignment"></style-->
     </custom-style>
 
     <style include="shared-styles"></style>
-    <style include="my-image-carousel-shared-styles"></style>
+    <style include="image-carousel-shared-styles"></style>
 
     <app-location route="{{route}}"></app-location>
     <app-route
@@ -157,7 +156,7 @@
           <my-home name="home"></my-home>
 
           <my-carousel name="carousel" title="My Awesome Carousel" int=500 max=12000  appendimage></my-carousel>
-          <my-image-carousel name="image-carousel"  int=250 max=1200  autoscroll>
+          <my-image-carousel name="image-carousel"  controls int=250 max=1200  label="Awesome Carousel">
               <img data-src="../images/png/JP2004137757Ap10.png">
               <img data-src="../images/png/JP2004137757Ap11.png">
               <img data-src="../images/png/JP2004137757Ap13.png">
@@ -191,22 +190,6 @@
               <img data-src="../images/png/NL1010536C2p16.png">
               <img data-src="../images/png/NL1010536C2p8.png">
               <img data-src="../images/png/JP2004137757Ap6.png">
-              <img data-src="../images/png/NL1010536C2p17.png">
-              <img data-src="../images/png/NL1010536C2p9.png">
-              <img data-src="../images/png/JP2004137757Ap7.png">
-              <img data-src="../images/png/NL1010536C2p18.png">
-              <img data-src="../images/png/JP2004137757Ap10.png">
-              <img data-src="../images/png/JP2004137757Ap11.png">
-              <img data-src="../images/png/JP2004137757Ap13.png">
-              <img data-src="../images/png/NL1010536C2p13.png">
-              <img data-src="../images/png/NL1010536C2p13.png">
-              <img data-src="../images/png/NL1010536C2p6.png">
-              <img data-src="../images/png/JP2004137757Ap10.png">
-              <img data-src="../images/png/JP2004137757Ap11.png">
-              <img data-src="../images/png/JP2004137757Ap13.png">
-              <img data-src="../images/png/NL1010536C2p13.png">
-              <img data-src="../images/png/NL1010536C2p13.png">
-              <img data-src="../images/png/NL1010536C2p6.png">
           </my-image-carousel>
           <my-show-git-repositories name="show-git-repositories"> user="PaulMatencio"</my-show-git-repositories>
           <my-view2 name="view2"></my-view2>

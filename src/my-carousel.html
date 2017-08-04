@@ -3,51 +3,82 @@
 <link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
 <link rel="import" href="shared-styles.html">
-<link rel="import" href="my-image-carousel-custom-styles.html">
-<link rel="import" href="my-image-carousel-shared-styles.html">
-<link rel="import" href="my-paper-icon-button-custom-styles.html">
+<link rel="import" href="image-carousel-custom-styles.html">
+<link rel="import" href="image-carousel-shared-styles.html">
+<link rel="import" href="paper-icon-button-custom-styles.html">
 <link rel="import" href="icon-toggle.html">
-<link rel="import" href="my-image-carousel-mixin.html">
+<link rel="import" href="image-carousel-mixin.html">
 <link rel="import" href="my-image-carousel.html">
 
 <dom-module id="my-carousel">
 
   <template>
     <style>
+
       :host {
         display: block;
         padding: 10px;
       }
+
+      icon-toogle: {
+        width: 32px;
+        height: 32px;
+      }
+      .toolbar {
+        margin: 10%;
+      }
+
+      span {
+        padding-left: 10px;
+      }
+
+       @media (max-width: 768px) {
+        .toolbar {
+          margin: 5%;
+          }
+      }
+
+       @media (max-width: 400px) {
+        .toolbar {
+            margin: 0;
+          }
+       }
+
+    }
+
     </style>
     <style include="shared-styles"></style>
     <custome-style>
-        <style include="my-image-carousel-custom-styles"></style>
-        <style include="my-paper-icon-button-custom-styles"></style>
+        <style include="image-carousel-custom-styles"></style>
+        <style include="paper-icon-button-custom-styles"></style>
     </custom-style>
-    <style  include="my-image-carousel-shared-styles"></style>
+
+    <style  include="image-carousel-shared-styles"></style>
+
     <iron-media-query query="max-width: 640px" query-matches="{{smallScreen}}"></iron-media-query>
     <dom-if if=[[!smallScreen]]>
       <template>
         <app-toolbar id="MyCarousel">
            <div main-title spacer>[[title]]</div>
-           <div> {{label}}</div>
+           <div> [[label]]</div>
+           <div> <span>Timer: [[int]] ms<pan></div>
         </app-toolbar>
         </template>
     <dom-if>
 
     <!-- images are added by methid _appendImages( images) images is an array -->
-    <my-image-carousel name="image-carousel"  autoscroll$= "{{autoscroll}}" appendimage label="{{label}}" int="{{int}}"  max="{{max}}">
-    </my-image-carousel>
-
-    <app-toolbar id="MyCarousel">
-
-      <paper-icon-button icon="av:fast-rewind" class="light-blue big"  title="Fist image" on-click="first_image"></paper-icon-button>
-      <paper-icon-button icon="add-circle" class="light-blue big" title="Increase interval" hidden$="[[!autoscroll]]" on-click="increase_interval"  ></paper-icon-button>
-      <paper-icon-button icon="remove-circle" class="light-blue big " title="Reduce interval" hidden$="[[!autoscroll]]" on-click="decrease_interval"></paper-icon-button>
-      <paper-icon-button  icon="av:add-to-queue" class="light-blue big " title="Add image to download" hidden$="[[autoscroll]]" on-click="add_to_queue"></paper-icon-button>
-      <paper-icon-button icon="av:remove-from-queue" class="light-blue big" title="Remove image from download"  hidden$="[[autoscroll]]" on-click="remove_from_queue"></paper-icon-button>
-      <paper-icon-button icon="file-download" class="light-blue big"  title="Download selected images" hidden$="[[autoscroll]]" on-click="download_images"></paper-icon-button>
-      <paper-icon-button icon="av:fast-forward" class="light-blue big" title="Last image" on-click="last_image"></paper-icon-button>
+    <my-image-carousel name="image-carousel"  autoscroll$= "{{autoscroll}}" appendimage label="{{label}}" int="{{int}}"  max="{{max}}"></my-image-carousel>
+    <span></span>
+    <app-toolbar id="MyCarousel" >
+      <div class="toolbar">
+        <paper-icon-button icon="av:fast-rewind" class="light-blue big"  title="Fist image" on-click="first_image"></paper-icon-button>
+        <paper-icon-button icon="add-circle" class="light-blue big" title="Increase interval" hidden$="[[!autoscroll]]" on-click="increase_interval"  ></paper-icon-button>
+        <paper-icon-button icon="remove-circle" class="light-blue big" title="Reduce interval" hidden$="[[!autoscroll]]" on-click="decrease_interval"></paper-icon-button>
+        <paper-icon-button  icon="av:add-to-queue" class="light-blue big" title="Add image to download" hidden$="[[autoscroll]]" on-click="add_to_queue"></paper-icon-button>
+        <paper-icon-button icon="av:remove-from-queue" class="light-blue big" title="Remove image from download"  hidden$="[[autoscroll]]" on-click="remove_from_queue"></paper-icon-button>
+        <paper-icon-button icon="file-download" class="light-blue big"  title="Download selected images" hidden$="[[autoscroll]]" on-click="download_images"></paper-icon-button>
+        <paper-icon-button icon="av:fast-forward" class="light-blue big" title="Last image" on-click="last_image"></paper-icon-button>
+      </div>
 
       <div class="toggle-icon">
         <icon-toggle  toggle-icon="arrow-forward" pressed="{{autoscroll}}"></icon-toggle>
@@ -63,6 +94,16 @@
         </dom-if>
 
       </div>
+
+
+      <dom-if if="[[autoscroll]]">
+          <template>
+            <paper-slider value="{{int}}" max="[[max]]" step="[[_step]]" max-marker="40" on-tap="set_interval" ></paper-slider>
+            <p >{{int}} ms</p>
+          </template>
+      </dom-if>
+
+
     </app-toolbar>
 
   </template>
@@ -99,7 +140,6 @@
     ready() {
       super.ready();
       this.carousel = this.shadowRoot.querySelector("my-image-carousel");
-      console.log(this.carousel);
       if (this.appendimage) {
           this._appendImage(this.carousel);
       }
@@ -146,7 +186,6 @@
       this.carousel.download_images();
     }
 
-
    _appendImage(element) {
       this.images.forEach( function(image){
         var img  = document.createElement("img");
@@ -158,6 +197,14 @@
 
   }
 
+  /*
+  NL1010536C2p16.png","NL1010536C2p8.png","NL1010536C2p17.png","NL1010536C2p9.png","JP2004137757Ap10.png",
+  "JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png","NL1010536C2p13.png",
+  "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png","NL1010536C2p17.png","NL1010536C2p9.png",
+  "JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
+    "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png","NL1010536C2p17.png","NL1010536C2p9.png"
+  */
+
   function  getimages() {
     return ["JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
           "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png",
@@ -167,12 +214,8 @@
           "JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
           "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png",
           "NL1010536C2p17.png","NL1010536C2p9.png","JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png",
-          "JP2004137757Ap13.png","JP2004137757Ap1.png","NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png",
-          "NL1010536C2p16.png","NL1010536C2p8.png","NL1010536C2p17.png","NL1010536C2p9.png","JP2004137757Ap10.png",
-          "JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png","NL1010536C2p13.png",
-          "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png","NL1010536C2p17.png","NL1010536C2p9.png",
-          "JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
-            "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png","NL1010536C2p17.png","NL1010536C2p9.png"
+          "JP2004137757Ap13.png","JP2004137757Ap1.png","NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png"
+
         ];
    }
 
