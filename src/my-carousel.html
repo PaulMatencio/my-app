@@ -18,23 +18,6 @@
         display: block;
         padding: 10px;
       }
-
-      .toggle-icon:hover .stop::after{
-        position: relative;
-        content: 'Stop scrolling';
-        color: white;
-        background-color: black;
-        padding: 3px 8px;
-      }
-
-      .toggle-icon:hover .start::after {
-        position: relative;
-        content: 'Start scrolling';
-        color: white;
-        background-color: black;
-        padding: 3px 8px;
-      }
-
     </style>
     <style include="shared-styles"></style>
     <custome-style>
@@ -58,13 +41,13 @@
 
     <app-toolbar id="MyCarousel">
 
-      <paper-icon-button icon="av:fast-rewind" class="light-blue"  title="Fist image" on-click="first_image"></paper-icon-button>
-      <paper-icon-button icon="add-circle" class="light-blue" title="Increase interval" hidden$="[[!autoscroll]]" on-click="increase_interval"  ></paper-icon-button>
-      <paper-icon-button icon="remove-circle" class="light-blue" title="Reduce interval" hidden$="[[!autoscroll]]" on-click="decrease_interval"></paper-icon-button>
-      <paper-icon-button  icon="av:add-to-queue" class="light-blue" title="Add image to download" hidden$="[[autoscroll]]" on-click="add_to_queue"></paper-icon-button>
-      <paper-icon-button icon="av:remove-from-queue" class="light-blue" title="Remove image from download"  hidden$="[[autoscroll]]" on-click="remove_from_queue"></paper-icon-button>
-      <paper-icon-button icon="file-download" class="light-blue"  title="Download selected images" hidden$="[[autoscroll]]" on-click="download_images"></paper-icon-button>
-      <paper-icon-button icon="av:fast-forward" class="light-blue" title="Last image" on-click="last_image"></paper-icon-button>
+      <paper-icon-button icon="av:fast-rewind" class="light-blue big"  title="Fist image" on-click="first_image"></paper-icon-button>
+      <paper-icon-button icon="add-circle" class="light-blue big" title="Increase interval" hidden$="[[!autoscroll]]" on-click="increase_interval"  ></paper-icon-button>
+      <paper-icon-button icon="remove-circle" class="light-blue big " title="Reduce interval" hidden$="[[!autoscroll]]" on-click="decrease_interval"></paper-icon-button>
+      <paper-icon-button  icon="av:add-to-queue" class="light-blue big " title="Add image to download" hidden$="[[autoscroll]]" on-click="add_to_queue"></paper-icon-button>
+      <paper-icon-button icon="av:remove-from-queue" class="light-blue big" title="Remove image from download"  hidden$="[[autoscroll]]" on-click="remove_from_queue"></paper-icon-button>
+      <paper-icon-button icon="file-download" class="light-blue big"  title="Download selected images" hidden$="[[autoscroll]]" on-click="download_images"></paper-icon-button>
+      <paper-icon-button icon="av:fast-forward" class="light-blue big" title="Last image" on-click="last_image"></paper-icon-button>
 
       <div class="toggle-icon">
         <icon-toggle  toggle-icon="arrow-forward" pressed="{{autoscroll}}"></icon-toggle>
