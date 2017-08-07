@@ -9,10 +9,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
-
 <!-- shared styles for all views -->
 <dom-module id="shared-styles">
   <template>
+
     <style>
 
      .card {
@@ -40,6 +40,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background: #ddd;
         font-size: 30px;
         line-height: 64px;
+      }
+
+      /* center a div */
+      .center {
+        margin: auto;
+        width: 50%;
+        border: 3px solid black;
+        padding: 10px;
       }
 
       h1 {
@@ -86,13 +94,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       };
      }
 
+
      app-toolbar {
-       background-color: #acacac;
-       margin: 1px 0px;
        font-family: 'Roboto', Helvetica, sans-serif;
        color: white;
-       --app-toolbar-font-size: 20px;
+       background-color: var(--app-primary-color);
+       --app-toolbar-font-size: 1.7vw;
      }
+
+
 
      paper-input {
          color: white;
@@ -100,20 +110,50 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
          --paper-input-container-focus-color: #3c3c3c;
      }
 
+     .toolbar {
+       @apply --layout-horizontal;
+       @apply --layout-end-justified;
+       margin-top: 2px;
+
+     }
+
+     .smallbar {
+      @apply --layout-horizontal;
+       background-color: var(--app-secondary-color);
+        --app-toolbar-font-size: 1em;
+     }
+
+
      .toggle-icon:hover .stop::after{
-       position: relative;
+       position: absolute;
+       top: -10px;
        content: 'Stop scrolling';
        color: white;
        background-color: black;
        padding: 3px 8px;
+       font-size: 14px;
      }
 
      .toggle-icon:hover .start::after {
-       position: relative;
+       position: absolute;
+       top: -10px;
        content: 'Start scrolling';
        color: white;
        background-color: black;
        padding: 3px 8px;
+       font-size: 14px;
+     }
+
+     @media (max-width: 1288px) {
+         app-toolbar {
+             --app-toolbar-font-size: 2vw;
+         }
+     }
+
+     @media (max-width: 768px) {
+         app-toolbar {
+             --app-toolbar-font-size: 2.2vw;
+         }
      }
 
     </style>

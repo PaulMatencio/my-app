@@ -9,6 +9,8 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../bower_components/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="icon-toggle.html">
 <link rel="import" href="shared-styles.html">
@@ -16,34 +18,42 @@
 <link rel="import" href="show-git-styles.html">
 <link rel="import" href="paper-icon-button-custom-styles.html">
 
+
 <dom-module id="my-show-git-repositories">
-    <template>
+  <template>
       <!-- styles MUST be inside template -->
-      <style include="shared-styles"></style>
-      <style include="show-git-shared-styles"></style>
-      <style include="show-git-styles"></style>
-      <style include="iron-flex iron-flex-alignment"></style>
-      <custome-style>
-        <style include="my-paper-icon-button-custom-styles">
-        </style>
-      </custom-style>
+    <style include="shared-styles"></style>
+    <style include="show-git-shared-styles"></style>
+    <style include="show-git-styles"></style>
+    <style include="iron-flex iron-flex-alignment"></style>
+    <custome-style>
+      <style include="paper-icon-button-custom-styles">
+      </style>
+    </custom-style>
+    <style>
+      .smallbar {
+        font-size: 15px;
+        background-color: var(--app-secondary-color);
+      }
 
-      <iron-media-query query="max-width: 640px" query-matches="{{smallScreen}}"></iron-media-query>
-      <dom-if if= [[!smallScreen]]>
-        <template>
-          <app-toolbar  id="MyRepos">
-              <div main-title spacer> Show Github repositories </div>
-              <div> Number of returned Repositories: [[numberRepos]] </div>
-          </app-toolbar>
-        </div>
-       </template>
-      </dom-if>
+    </style>
 
-      <app-toolbar>
+    <app-header-layout>
+
+      <iron-media-query query="max-width: 768px" query-matches="{{smallScreen}}"></iron-media-query>
+
+      <app-header reveals effects="waterfall" slot="header">
+        <app-toolbar class="toolbar">
+          <dom-if if= [[!smallScreen]]>
+            <template>
+              <div main-title> Show Github repositories > [[numberRepos]] entries</div>
+            </template>
+          </dom-if>
           <paper-icon-button icon="search" title="Search user on Github" class="giant"  on-click="_fire" ></paper-icon-button>
           <paper-input label="USER NAME" value="{{user}}" ></paper-input>
           <paper-input spacer label="FILTER" value="{{filter}}"></paper-input>
-      </app-toolbar>
+        </app-toolbar>
+    </app-header>
 
       <!-- on-response="_handleResponse" -->
       <iron-ajax
@@ -60,38 +70,35 @@
             debounce-duration="300">
       </iron-ajax>
 
-      <app-indexeddb-mirror
-        key="repos"
-        data="{{liveData}}"
-        persisted-data="{{persistedData}}">
-      </app-indexeddb-mirror>
+      <app-indexeddb-mirror key="repos" data="{{liveData}}" persisted-data="{{persistedData}}"></app-indexeddb-mirror>
 
-      <div class="layout horizontal">
-        <div  class="layout horizontal center-center wrap">
-          <!--template is="dom-repeat" items="[[repos]]" -->
+      <!--div class="title"> List of returned repositories> [[numberRepos]] entries</div-->
+
+        <div  class="grid">
           <template is="dom-repeat" items="[[persistedData]]"  initial-count="10">
-            <div  id="repos" class="card layout-flex">
-               <div class="name">
+            <div  class="item">
+               <app-toolbar class="smallbar">
                  [[item.name]]
-                 <a href="[[item.html_url]]"> <paper-icon-button icon="link" title="Github url" class="light-blue big"></paper-icon-button></a>
+                 <a href="[[item.html_url]]"> <paper-icon-button icon="link" title="Github url" class="light-blue medium"></paper-icon-button></a>
                    <dom-if if="[[item.has_pages]]">
                       <template>
                         <div>
-                          <a href="[[item.homepage]]"> <paper-icon-button icon="home" title="Home page"  class="light-blue big"></paper-icon-button></a>
+                          <a href="[[item.homepage]]"> <paper-icon-button icon="home" title="Home page"  class="light-blue medium"></paper-icon-button></a>
                         </div>
                       </template>
                    </dom-if>
-               </div>
+               </app-toolbar>
                <div class="description>">
                  <span>[[item.description]]</span>
                </div>
                <div class="language">[[item.language]]</div>
                <div>[[item.created_at]]</div>
-             </div>
-           </template>
-         </div>
-       </div>
+           </div>
+         </template>
+     </div>
 
+
+     </app-header-layout>
     </template>
 
     <script>
@@ -135,7 +142,7 @@
               computed : '_computedLength(repos)',
               reflectToAttribute: true
             },
-            
+
             smallScreen: {
               type: Boolean
             }

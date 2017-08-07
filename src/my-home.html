@@ -1,23 +1,15 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-
 <link rel="import" href="../bower_components/app-layout/demo/sample-content.html">
-
 <dom-module id="my-home">
-
   <template>
-
     <style>
-
       a {
         text-decoration: none;
         font-size: inherit;
@@ -27,7 +19,8 @@
       .toolbar {
         @apply --layout-horizontal;
         @apply --layout-end-justified;
-        background-color: rgba(255, 255, 255, 0.95);
+        color: white;
+        background-color: var(--app-primary-color);
       }
 
       .tabs {
@@ -40,6 +33,7 @@
         @apply --layout-center-center;
         margin: 12px 16px 12px;
         border-bottom: 1px solid #222;
+        color: white;
       }
 
       header {

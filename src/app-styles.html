@@ -1,0 +1,75 @@
+<!-- personalized  style -->
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<dom-module id="app-styles">
+    <template>
+        <style>
+            :host {
+                --app-primary-color: #3C3C3C;
+                --app-secondary-color: #8c8c8c;
+                --app-toolbar-font-size: 24px;
+                --app-drawer-width: 300px;
+                --app-tool-bar {
+                    font-family: 'Roboto', Helvetica, sans-serif;
+                    color: white;
+                    background-color: var(--app-primary-color);
+                    --app-toolbar-font-size: 24px;
+                }
+                display: block;
+            }
+
+            app-toolbar {
+                @apply --app-tool-bar;
+            }
+
+            app-drawer-layout:not([narrow]) [drawer-toggle] {
+                display: none;
+            }
+
+            app-drawer {
+                --app-drawer-content-container: {
+                    box-shadow: 1px 0 5px 1px rgba(0, 0, 0, 0.25);
+                }
+                --app-drawer-scrim-background: rgba(179,157,219,0.5);
+            }
+
+            app-header {
+                color: #fff;
+                background-color: var(--app-primary-color);
+            }
+
+            app-header paper-icon-button {
+                --paper-icon-button-ink-color: white;
+            }
+
+            .drawer-list {
+                margin: 0 20px;
+            }
+
+            .drawer-list a {
+                display: block;
+                padding: 0;
+                text-decoration: none;
+                color: var(--app-secondary-color);
+                line-height: 30px;
+            }
+
+            .drawer-list a.iron-selected {
+                font-weight: bold;
+            }
+
+            paper-icon-button[hidden] {
+                display: none;
+            }
+
+            span {
+                margin: 0px 16px;
+            }
+
+            @media (max-width: 640px) {
+                app-toolbar {
+                    --app-toolbar-font-size: 18px;
+                }
+            }
+        </style>
+    </template>
+</dom-module>

@@ -1,5 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
 <link rel="import" href="shared-styles.html">
@@ -13,73 +16,166 @@
 <dom-module id="my-carousel">
 
   <template>
-    <style>
 
+  <custome-style>
+      <style include="image-carousel-custom-styles"></style>
+      <style include="paper-icon-button-custom-styles"></style>
+  </custom-style>
+  <style include="shared-styles"></style>
+  <style  include="image-carousel-shared-styles"></style>
+    <style>
       :host {
         display: block;
-        padding: 10px;
+        line-height: 1.2;
       }
 
       icon-toogle: {
         width: 32px;
         height: 32px;
       }
+
       .toolbar {
-        margin: 10%;
+        @apply --layout-horizontal;
+        @apply --layout-end-justified;
+        background-color: var(--app-primary-color);
       }
 
       span {
-        padding-left: 10px;
+        padding-left: 5%;
       }
 
-       @media (max-width: 768px) {
-        .toolbar {
-          margin: 5%;
-          }
+      .download {
+        display: inline-flex;
+        font-size: 14px;
+        padding: 0;
+        margin: 0;
       }
 
-       @media (max-width: 400px) {
-        .toolbar {
-            margin: 0;
-          }
+
+      .image {
+        opacity: 1;
+        display: block;
+        width: 100%;
+        height: auto;
+        transition: .5s ease;
+        .container {
+          position: relative;
+          width: 50%;
+        }
+      }
+
+      .text {
+        background-color: var(--app-secondary-color);
+        color: white;
+        font-size: 14px;
+        padding: 10px 10px;
+      }
+
+      .overlay {
+        position: absolute;
+        top: -100%;
+        z-index: 10;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        transition: .3s ease;
+        background-color: #fff;
+      }
+
+      .overlay .image {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+      }
+
+       /*
+      .overlay .text {
+        position: relative;
+        opacity: 1;
+      }
+       */
+      .container:hover .image {
+        opacity: 0.7;
+      }
+
+      .container:hover .overlay {
+        opacity: 1;
+        transform: translateY(0px);
+        -webkit-transform: translateY(0px);
+        -ms-transform: translateY(0px);
+        left: 25%;
+        top: 25%;
+        height: 60%;
+        width: 50%;
+      }
+
+      @media (max-width: 1288px) {
+         .middle {
+           top: 60%;
+           left: 30%
+         }
+      }
+
+      @media (max-width: 768px) {
+         .middle {
+           top: 50%;
+         }
+      }
+
+      @media (max-width: 400px) {
+        .middle {
+          top: 40%;
+        }
        }
 
     }
 
     </style>
-    <style include="shared-styles"></style>
-    <custome-style>
-        <style include="image-carousel-custom-styles"></style>
-        <style include="paper-icon-button-custom-styles"></style>
-    </custom-style>
 
-    <style  include="image-carousel-shared-styles"></style>
+<app-header-layout>
 
     <iron-media-query query="max-width: 640px" query-matches="{{smallScreen}}"></iron-media-query>
-    <dom-if if=[[!smallScreen]]>
-      <template>
-        <app-toolbar id="MyCarousel">
-           <div main-title spacer>[[title]]</div>
-           <div> [[label]]</div>
-           <div> <span>Timer: [[int]] ms<pan></div>
-        </app-toolbar>
+    <app-header reveals effects="waterfall" slot="header">
+      <dom-if if=[[!smallScreen]]>
+        <template>
+          <app-toolbar id="MyCarousel" class="toolbar" sticky>
+            <div main-title spacer>[[title]]</div>
+            <div> [[label]] : [[index]]/[[length]] ... Timer:[[int]] ms></div>
+          </app-toolbar>
         </template>
-    <dom-if>
+        <dom-if>
+    </app-header>
 
-    <!-- images are added by methid _appendImages( images) images is an array -->
-    <my-image-carousel name="image-carousel"  autoscroll$= "{{autoscroll}}" appendimage label="{{label}}" int="{{int}}"  max="{{max}}"></my-image-carousel>
-    <span></span>
-    <app-toolbar id="MyCarousel" >
-      <div class="toolbar">
-        <paper-icon-button icon="av:fast-rewind" class="light-blue big"  title="Fist image" on-click="first_image"></paper-icon-button>
-        <paper-icon-button icon="add-circle" class="light-blue big" title="Increase interval" hidden$="[[!autoscroll]]" on-click="increase_interval"  ></paper-icon-button>
-        <paper-icon-button icon="remove-circle" class="light-blue big" title="Reduce interval" hidden$="[[!autoscroll]]" on-click="decrease_interval"></paper-icon-button>
-        <paper-icon-button  icon="av:add-to-queue" class="light-blue big" title="Add image to download" hidden$="[[autoscroll]]" on-click="add_to_queue"></paper-icon-button>
-        <paper-icon-button icon="av:remove-from-queue" class="light-blue big" title="Remove image from download"  hidden$="[[autoscroll]]" on-click="remove_from_queue"></paper-icon-button>
-        <paper-icon-button icon="file-download" class="light-blue big"  title="Download selected images" hidden$="[[autoscroll]]" on-click="download_images"></paper-icon-button>
-        <paper-icon-button icon="av:fast-forward" class="light-blue big" title="Last image" on-click="last_image"></paper-icon-button>
-      </div>
+    <!-- images are added by method _appendImages  -->
+    <my-image-carousel name="image-carousel"  autoscroll$= "{{autoscroll}}" appendimage label="{{label}}" int="{{int}}" index={{index}} max="{{max}}"></my-image-carousel>
 
+    <div  id="download" class="download">
+      <template is="dom-repeat" items="[[Images]]">
+        <div class="container">
+          <a href = "[[item.img]]" download hidden$="[[autoscroll]]" tabindex="-1">
+            <img class="image" border="1" src="[[item.img]]" data-src$= "[[item.img]]" data-index$="[[item.index]]"  alt="png" width="60" height="60">
+          </a>
+          <paper-icon-button icon="delete" class="light-blue small" data-index$="[[item.index]]" on-tap="deleteIt"></paper-icon-button>
+          <div class="overlay">
+            <div class="text">[[item.image]] / [[item.index]]</div>
+            <img class="image" border="1" src="[[item.img]]">
+          </div>
+          <span><span>
+        </div>
+      </template>
+    </div>
+
+    <app-toolbar id="MyCarousel" class="toolbar" >
+
+
+      <dom-if if="[[autoscroll]]">
+          <template>
+            <paper-slider value="{{int}}" max="[[max]]" step="[[_step]]" max-marker="40" on-tap="set_interval" ></paper-slider>
+            <p >{{int}} ms</p>
+          </template>
+      </dom-if>
+      <span></span>
       <div class="toggle-icon">
         <icon-toggle  toggle-icon="arrow-forward" pressed="{{autoscroll}}"></icon-toggle>
         <dom-if if="[[autoscroll]]">
@@ -92,20 +188,18 @@
             <span class="start">  </span>
           </template>
         </dom-if>
-
       </div>
-
-
-      <dom-if if="[[autoscroll]]">
-          <template>
-            <paper-slider value="{{int}}" max="[[max]]" step="[[_step]]" max-marker="40" on-tap="set_interval" ></paper-slider>
-            <p >{{int}} ms</p>
-          </template>
-      </dom-if>
-
-
+      <span></span>
+        <paper-icon-button icon="av:fast-rewind" class="light-blue medium"  title="Fist image" on-tap="first_image"></paper-icon-button>
+        <paper-icon-button icon="add-circle" class="light-blue medium" title="Increase timer" hidden$="[[!autoscroll]]" on-tap="increase_interval"  ></paper-icon-button>
+        <paper-icon-button icon="remove-circle" class="light-blue medium" title="Reduce timer" hidden$="[[!autoscroll]]" on-tap="decrease_interval"></paper-icon-button>
+        <paper-icon-button  icon="av:add-to-queue" class="light-blue medium" title="Add image to download" hidden$="[[autoscroll]]" on-tap="add_to_list"></paper-icon-button>
+        <paper-icon-button icon="av:remove-from-queue" class="light-blue medium" title="Remove image from download"  hidden$="[[autoscroll]]" on-tap="remove_from_list"></paper-icon-button>
+        <paper-icon-button icon="file-download" class="light-blue medium"  title="Download selected images" hidden$="[[autoscroll]]" on-tap="download_images"></paper-icon-button>
+        <paper-icon-button icon="av:fast-forward" class="light-blue medium" title="Last image" on-tap="last_image"></paper-icon-button>
     </app-toolbar>
 
+</app-header-laout>
   </template>
 
   <script>
@@ -115,7 +209,6 @@
     static get is() { return 'my-carousel'; }
 
     static get properties() {
-
       return {
         title: {
           type: String,
@@ -127,99 +220,139 @@
         },
 
         images: {
-          type : Array,
+          type: Array,
           value: getimages()
+        },
+
+        length: {
+          type: Number,
+          value: computeLength(),
+          notify: true
         }
      }
    }
 
-    constructor() {
+  constructor() {
       super();
-    }
-
-    ready() {
-      super.ready();
-      this.carousel = this.shadowRoot.querySelector("my-image-carousel");
-      if (this.appendimage) {
-          this._appendImage(this.carousel);
-      }
-    }
-
-    next_image() {
-      this.carousel.next_image();
-    }
-
-    previous_image() {
-       this.carousel.previous_image();
-    }
-
-    first_image() {
-       this.carousel.first_image();
-    }
-
-    last_image() {
-      this.carousel.last_image();
-    }
-
-    increase_interval() {
-      this.carousel.increase_interval();
-    }
-
-    decrease_interval() {
-      this.carousel.decrease_interval();
-
-    }
-
-    set_interval() {
-      this.carousel.set_interval();
-    }
-
-    add_to_queue() {
-      this.carousel.add_to_queue();
-    }
-
-    remove_from_queue() {
-      this.carousel.remove_from_queue();
-    }
-
-    download_images() {
-      this.carousel.download_images();
-    }
-
-   _appendImage(element) {
-      this.images.forEach( function(image){
-        var img  = document.createElement("img");
-        img.setAttribute('data-src', this.hosts + image );
-        element.appendChild(img);
-      },this);
-    }
-
-
   }
 
-  /*
-  NL1010536C2p16.png","NL1010536C2p8.png","NL1010536C2p17.png","NL1010536C2p9.png","JP2004137757Ap10.png",
-  "JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png","NL1010536C2p13.png",
-  "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png","NL1010536C2p17.png","NL1010536C2p9.png",
-  "JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
-    "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png","NL1010536C2p17.png","NL1010536C2p9.png"
-  */
+  ready() {
+    super.ready();
+    this.carousel = this.shadowRoot.querySelector("my-image-carousel");
+    if (this.appendimage) {
+          this._appendImage(this.carousel);
+    }
+  }
+
+  first_image() {
+    this.carousel.first_image();
+  }
+
+  last_image() {
+    this.carousel.last_image();
+  }
+
+  increase_interval() {
+    this.carousel.increase_interval();
+  }
+
+  decrease_interval() {
+    this.carousel.decrease_interval();
+  }
+
+  set_interval() {
+    this.carousel.set_interval();
+  }
+
+  add_to_list() {
+    var image = {
+      img    : this.carousel.selected.src,
+      image  : this.carousel.selected.dataset.image,
+      index  : this.carousel.selected.dataset.index
+    }
+
+    if (itcontains(this.Images,image.index) <  0) {
+      this.push("Images", image) ;
+    }
+  }
+
+  remove_from_list() {
+    var index = itcontains(this.Images,this.carousel.selected.dataset.index);
+    if ( index >= 0 ) {
+      this.splice("Images",index,1) ;
+    }
+  }
+
+  deleteIt(e) {
+    var target =  e.currentTarget;
+    var index = itcontains(this.Images,target.getAttribute('data-index'));
+    if ( index >= 0 ) {
+      this.splice("Images",index,1) ;
+    }
+  }
+
+  download_images() {
+    var element = this.shadowRoot.querySelector("#download");
+    if (element != null)  {
+      var children = element.children;
+      for ( var i = 0; i < children.length -1 ; i++ ) {
+        simulateClick(children[i].children[0]) ;
+      }
+    }
+  }
+
+  _appendImage(element) {
+    this.images.forEach( function(image,index){
+        var img  = document.createElement("img");
+        img.setAttribute('data-src', this.hosts + image );
+        img.setAttribute('data-index',index+1);
+        img.setAttribute('data-image',image);
+        element.appendChild(img);
+    },this);
+  }
+}
+
+  var images = ["JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
+        "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png",
+        "NL1010536C2p17.png","NL1010536C2p9.png","JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png",
+        "JP2004137757Ap13.png","JP2004137757Ap1.png","NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png",
+        "NL1010536C2p16.png","NL1010536C2p8.png","NL1010536C2p17.png","NL1010536C2p9.png","JP2004137757Ap10.png",
+        "JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
+        "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png",
+        "NL1010536C2p17.png","NL1010536C2p9.png","JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png",
+        "JP2004137757Ap13.png","JP2004137757Ap1.png","NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png"
+      ];
 
   function  getimages() {
-    return ["JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
-          "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png",
-          "NL1010536C2p17.png","NL1010536C2p9.png","JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png",
-          "JP2004137757Ap13.png","JP2004137757Ap1.png","NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png",
-          "NL1010536C2p16.png","NL1010536C2p8.png","NL1010536C2p17.png","NL1010536C2p9.png","JP2004137757Ap10.png",
-          "JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
-          "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png",
-          "NL1010536C2p17.png","NL1010536C2p9.png","JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png",
-          "JP2004137757Ap13.png","JP2004137757Ap1.png","NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png"
+    return images;
+  }
 
-        ];
+  function computeLength() {
+    return images.length;
+  }
+
+  function itcontains(Images,index) {
+    var len = Images.length;
+    if (len == 0) {
+      return -1;
+    }
+    for (i = 0; i < len; i++ ) {
+      if (Images[i].index === index) {
+        break;
+      }
+    }
+    return (i >= 0 && i < len ? i : -1);
+  }
+
+  function simulateClick(control)  {
+    if (document.all) {
+     control.click();
+     }  else {
+       var evObj = document.createEvent('MouseEvents');
+       evObj.initMouseEvent('click', true, true, window, 1, 12, 345, 7, 220, false, false, true, false, 0, null );
+       control.dispatchEvent(evObj);
+     }
    }
-
-
   window.customElements.define(MyCarousel.is, MyCarousel);
 </script>
 

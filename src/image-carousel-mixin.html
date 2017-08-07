@@ -12,7 +12,7 @@
         observer: '_selectedChanged'
       },
 
-      _title: {
+      title: {
         type: String,
         notify: true,
         observer: '_titleChanged'
@@ -22,7 +22,7 @@
         type: String,
         value: "",
         notify: true,
-        reflectToAttribute: true,
+        reflectToAttribute: true
       },
       /**
         * Boolean value to decide if images should change automatically.
@@ -36,12 +36,12 @@
         observer: '_autoScroll'
       },
 
-      /*
-      images: {
-        type : Array,
-        value: getimages()
+      index: {
+        type: Number,
+        notify: true,
+        value: 0,
+        reflectToAttribute: true
       },
-      */
 
       /**
       *      Append new images to the images array attribute
@@ -58,9 +58,9 @@
        * default off  for scrolling forward
        */
       transition: {
-          type: Boolean,
-          value: false,
-          notify: true,
+        type: Boolean,
+        value: false,
+        notify: true,
         reflectToAttribute: true
         },
 
@@ -139,18 +139,20 @@
           notify: true,
           value: false,
           reflectToAttribute: true
-        },
-
-        /**
-        * reserved for future use to toggle info
-        */
+      },
 
       info : {
           type: Boolean,
           value: false,
           notify: true,
           reflectToAttribute: true
-        }
+      },
+
+      index: {
+        type: Number,
+        value: 0,
+        notify: true
+      }
 
       };
     }
@@ -189,8 +191,8 @@
     /*  this.info is a parent attribute */
 
     _titleChanged() {
-        var index = this._title.indexOf(".")
-        this.label = (index > 0 ? this._title.substring(0,index): this._title );
+        var index = this.title.indexOf(".")
+        this.label = (index > 0 ? this.title.substring(0,index): this.title );
     }
 
   }; // end of superclass extension

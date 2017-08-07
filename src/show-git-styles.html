@@ -9,8 +9,9 @@
         padding : 0;
         line-height: 1.5;
         background-color:  white;
-        --app-primary-color: white;
-        --app-secondary-color: white;
+        --app-primary-color: #3C3C3C;
+        --app-secondary-color: #4c4c4c;
+        --app-toolbar-font-size: 24px;
         --paper-input-container-input-color: white;
      }
 
@@ -36,48 +37,84 @@
 
     .title {
       @apply --my-title;
-      background-color: var(--paper-indigo-50);
-      color: var(--paper-blue-600);
-    }
-
-    .show {
-     margin: 0 20%
-    }
-    div > .title {
-      margin: 0;
+      background-color: white;
+      color: var(--app-primary-color);
     }
 
     a {
       display: block;
     }
 
+    div > .title {
+      margin: 0;
+    }
+
     div  a {
       display: inline-flex;
     }
 
-    @media (max-width: 640px ) {
-      .card {
-        height: auto;
-        width: auto;
+    .grid {
+      @apply --layout-horizontal;
+      @apply --layout-center-center;
+      @apply --layout-wrap;
+      margin-top: 10px;
+    }
 
+    .grid > .item {
+      -webkit-flex: 1 calc(33% - 40px);
+      flex: 1 calc(33% - 40px);
+      max-width: calc(33% - 40px);
+      height: 15vmax;
+      min-height: 200px;
+      margin: 10px;
+      text-decoration: none;
+      background-color: #efefef;
+      padding: 10px;
+      font-size: 1.2em;
+    }
+
+    /**
+     * Desktop small, tablet
+    */
+    @media (max-width: 1200px) {
+
+      .grid {
+        font-size: 0.8em;
       }
-      .card:hover {
 
-          -webkit-transform: scale(1.1);
-          transform: scale(1.1);
-      }
 
-      app-toolbar {
-        --app-toolbar-font-size: 15px;
+      .grid > .item {
+        -webkit-flex: 1 calc(50% - 40px);
+        flex: 1 calc(50% - 40px);
+        max-width: calc(50% - 40px);
+        text-decoration: none;
+        height: 22vmax;
+
       }
     }
 
-    @media (min-width: 641px ) and (max-width: 1024px) {
-      .card {
-        width: 40%;
+
+    /**
+     * Phone
+     */
+    @media (max-width: 480px) {
+      /*
+      .grid {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      */
+      .grid > .item {
+        -webkit-flex: 1 calc(100% - 10px);
+        flex: 1 calc(100% - 10px);
+        max-width: calc(100% - 10px);
+        margin: 5px;
+        height: 20vmax;
+        min-height: 200px;
+        text-decoration: none;
+        background-color: #efefef;
       }
     }
-
     </style>
   </template>
 </dom-module>

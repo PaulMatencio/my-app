@@ -23,7 +23,7 @@
 
     <style include="shared-styles"></style>
     <style include="image-carousel-styles"></style>
-    
+
 
     <div>
       <slot></slot>
@@ -69,8 +69,8 @@
             <paper-icon-button icon="av:fast-rewind" class="light-blue"  title="Fist image" on-click="first_image"></paper-icon-button>
             <paper-icon-button icon="add-circle" class="light-blue" title="Increase interval" hidden$="[[!autoscroll]]" on-click="increase_interval"  ></paper-icon-button>
             <paper-icon-button icon="remove-circle" class="light-blue" title="Reduce interval" hidden$="[[!autoscroll]]" on-click="decrease_interval"></paper-icon-button>
-            <paper-icon-button  icon="av:add-to-queue" class="light-blue" title="Add image to download" hidden$="[[autoscroll]]" on-click="add_to_queue"></paper-icon-button>
-            <paper-icon-button icon="av:remove-from-queue" class="light-blue" title="Remove image from download"  hidden$="[[autoscroll]]" on-click="remove_from_queue"></paper-icon-button>
+            <paper-icon-button  icon="av:add-to-queue" class="light-blue" title="Add image to download" hidden$="[[autoscroll]]" on-click="add_to_list"></paper-icon-button>
+            <paper-icon-button icon="av:remove-from-queue" class="light-blue" title="Remove image from download"  hidden$="[[autoscroll]]" on-click="remove_from_list"></paper-icon-button>
             <paper-icon-button icon="file-download" class="light-blue"  title="Download selected images" hidden$="[[autoscroll]]" on-click="download_images"></paper-icon-button>
             <paper-icon-button icon="av:fast-forward" class="light-blue" title="Last image" on-click="last_image"></paper-icon-button>
         </div>
@@ -98,18 +98,15 @@
           super._selectedChanged(selected, oldSelected);
           if (selected) {
             if (selected !== undefined) {
-              var paths =  selected.src.split("/") ;
-              this._title = paths[paths.length -1];
+              this.title =  selected.dataset.image ;
+              this.index = selected.dataset.index;
             }
             var previous = selected.previousElementSibling;
             var next = selected.nextElementSibling;
             if (this.$.prevBtn !== undefined ) {
               this.$.prevBtn.disabled = !previous ;
               this.$.nextBtn.disabled = !next;
-            } else {
-              console.log(this.$);
             }
-
             /* lazy-load images */
             this._loadImage(selected);
             this._loadImage(previous);
@@ -129,9 +126,11 @@
        */
       appendImage(images) {
 
-        images.forEach( function(image){
+        images.forEach( function(image,index){
           var img  = document.createElement("img");
           img.setAttribute('data-src', this.hosts + image );
+          img.setAttribute('data-index', index );
+          img.setAttribute('data-image',image);
           this.appendChild(img);
         },this);
 
@@ -179,10 +178,8 @@
         if ( typeof(this.currentInterval)  !=  "undefined ") {
               clearInterval(this.currentInterval)
         }
-        console.log("autoscroll",this.int);
         if (this.autoscroll) {
           this.currentInterval = setInterval(_ => this.next_image(), this.int);
-          console.log(this.currentInterval);
           }
         }
 
@@ -204,15 +201,12 @@
 
           this._translateX(oldSelected, this.offsetWidth, true  );
           this._translateX(elem, 0, true  );
-
         } else {
-
           var last  = this.lastElementChild;
           this.selected = last;
           this._translateX(last, 0, true /* transition */);
           this.last_image();
         }
-
       }
 
       next_image() {
@@ -230,16 +224,12 @@
           this.selected = elem;
           this._translateX(oldSelected,-this.offsetWidth,false);
           this._translateX(elem, 0, false);
-
-
         }  else {
-
           var first = this.firstElementChild;
           this.selected = first;
           this._translateX(first, 0, true /* transition */);
           this.first_image()
         }
-
       }
 
       /**
@@ -249,20 +239,18 @@
 
       first_image() {
         const elem = this.selected ;
-        /* this._translateX(elem, 0); */
         this._translateX(elem, this.offsetWidth,true);
         var first = this.firstElementChild;
         this.selected = first;
-        this._translateX(first, 0, true /* transition */);
+        this._translateX(first, 0, true);
       }
 
       last_image() {
         const elem = this.selected ;
-        /* this._translateX(elem, 0); */
         this._translateX(elem, -this.offsetWidth,true);
         var last = this.lastElementChild;
         this.selected = last;
-        this._translateX(last, 0, true /* transition */);
+        this._translateX(last, 0, true);
       }
 
       increase_interval() {
@@ -289,15 +277,17 @@
         this._autoScroll();
       }
 
-      add_to_queue() {
+      add_to_list() {
         var image = this.selected.src;
+        // check if the image is already in the list
         var index = this.Images.indexOf(image);
         if (index < 0) {
           this.push("Images", image) ;
         }
+        console.log(this.Images);
       }
 
-      remove_from_queue() {
+      remove_from_list() {
         var image = this.selected.src;
         var index = this.Images.indexOf(image);
         if ( index >= 0 ) {

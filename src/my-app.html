@@ -18,193 +18,113 @@
 <link rel="import" href="../bower_components/iron-icons/image-icons.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="my-icons.html">
-
 <link rel="import" href="image-carousel-custom-styles.html">
 <link rel="import" href="image-carousel-shared-styles.html">
+<link rel="import" href="app-styles.html">
 <link rel="import" href="show-git-custom-styles.html">
 <link rel="import" href="paper-icon-button-custom-styles.html">
-
 <link rel="lazy-import" href="my-home.html">
 <link rel="lazy-import" href="my-view2.html">
 <link rel="lazy-import" href="my-view3.html">
 <link rel="lazy-import" href="my-new-view.html">
 <link rel="lazy-import" href="my-image-carousel.html">
-<link rel="lazy-import" href="my-carousel.html"-->
+<link rel="lazy-import" href="my-carousel.html" -->
 <link rel="lazy-import" href="my-show-git-repositories.html">
 <link rel="lazy-import" href="my-view404.html">
-
-
 <dom-module id="my-app">
   <template>
-    <style>
-      :host {
-        --app-primary-color: #acacac;
-        --app-secondary-color: #3c3c3c;
-        --app-toolbar-font-size: 24px;
-        --app-drawer-width: 300px;
-        display: block;
-      }
-
-      app-toolbar {
-        font-family: 'Roboto', Helvetica, sans-serif;
-        color: white;
-        --app-toolbar-font-size: 24px;
-      }
-
-      app-drawer-layout:not([narrow]) [drawer-toggle] {
-        display: none;
-      }
-
-      app-drawer {
-        --app-drawer-content-container: { box-shadow: 1px 0 5px 1px rgba(0,0,0,0.25);}
-        --app-drawer-scrim-background: rgba(179, 157, 219, 0.5);
-      }
-
-      app-header {
-        color: #fff;
-        background-color: var(--app-primary-color);
-      }
-
-      app-header paper-icon-button {
-        --paper-icon-button-ink-color: white;
-      }
-
-      .drawer-list {
-        margin: 0 20px;
-      }
-
-      .drawer-list a {
-        display: block;
-        padding: 0;
-        /* padding: 0 16px; */
-        text-decoration: none;
-        color: var(--app-secondary-color);
-        line-height: 40px;
-      }
-
-      .drawer-list a.iron-selected {
-        /* color: black; */
-        font-weight: bold;
-      }
-
-      paper-icon-button[hidden] {
-        display: none;
-      }
-
-      span {
-        margin:  0px 16px;
-      }
-
-      @media (max-width: 640px ) {
-        app-toolbar {
-          --app-toolbar-font-size: 18px;
-        }
-
-      }
-
-    </style>
-
+    <style include="app-styles"></style>
     <!--  include custom style   -->
     <custome-style>
-        <style include="image-carousel-custom-styles"></style>
-        <style include="show-git-custom-styles"></style>
-        <style include="paper-icon-button-custom-styles"></style>
-        <!--style  include="iron-flex iron-flex-alignment"></style-->
-    </custom-style>
+      <style include="image-carousel-custom-styles"></style>
+      <style include="show-git-custom-styles"></style>
+      <style include="paper-icon-button-custom-styles"></style>
+      <!--style  include="iron-flex iron-flex-alignment"></style-->
+      </custom-style>
+      <style include="shared-styles"></style>
+      <style include="image-carousel-shared-styles"></style>
+      <app-location route="{{route}}"></app-location>
+      <app-route route="{{route}}" pattern="[[rootPattern]]:page" data="{{routeData}}" tail="{{subroute}}">
+      </app-route>
+      <app-drawer-layout fullbleed drawer-width="288px" responsive-width="1288px">
 
-    <style include="shared-styles"></style>
-    <style include="image-carousel-shared-styles"></style>
+        <!-- Drawer content -->
+        <app-drawer id="drawer" slot="drawer">
+          <app-toolbar>Menu</app-toolbar>
+          <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+            <a name="home" href="home" tabindex=-1>
+              <paper-icon-item role="option" tabindex="0" aria-disable="false">
+                <iron-icon icon="home" class="medium"></iron-icon><span>Home</span>
+              </paper-icon-item>
+            </a>
+            <a name="carousel" href="carousel" tabindex=-1>
+              <paper-icon-item role="option" tabindex="0" aria-disable="false">
+                <iron-icon icon="image:collections" class="medium"></iron-icon><span>My Carousel</span>
+              </paper-icon-item>
+            </a>
+            <a name="show-git-repositories" href="show-git-repositories" tabindex=-1>
+              <paper-icon-item role="option" tabindex="0" aria-disable="false">
+                <iron-icon icon="av:web-asset" class="medium"></iron-icon><span>Show Git repositories</span>
+              </paper-icon-item>
+            </a>
+            <a name="view2" href="view2" tabindex=-1>
+              <paper-icon-item role="option" tabindex="0" aria-disable="false">
+                <iron-icon icon="done"></iron-icon><span>View Two</span>
+              </paper-icon-item>
+              </paper-icon-item>
+            </a>
+            <a name="view3" href="view3" tabindex=-1>
+              <paper-icon-item role="option" tabindex="0" aria-disable="false">
+                <iron-icon icon="done"></iron-icon><span>View Three</span>
+              </paper-icon-item>
+            </a>
+            <a name="new-view" href="new-view" tabindex=-1>
+              <paper-icon-item role="option" tabindex="0" aria-disable="false">
+                <iron-icon icon="done"></iron-icon><span>New View</span>
+              </paper-icon-item>
+            </a>
+            <a name="image-carousel" href="image-carousel" tabindex=-1>
+              <paper-icon-item role="option" tabindex="0" aria-disable="false">
+                <iron-icon icon="image:collections" class="medium"></iron-icon><span>My Image Carousel</span>
+              </paper-icon-item>
+            </a>
+          </iron-selector>
+        </app-drawer>
 
-    <app-location route="{{route}}"></app-location>
-    <app-route
-        route="{{route}}"
-        pattern="[[rootPattern]]:page"
-        data="{{routeData}}"
-        tail="{{subroute}}">
-    </app-route>
-    <app-drawer-layout fullbleed drawer-width="288px" responsive-width="1288px" >
+        <!-- Main content -->
+        <app-header-layout has-scrolling-region>
 
-      <!-- Drawer content -->
-      <app-drawer id="drawer" slot="drawer">
-        <app-toolbar>Menu</app-toolbar>
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="home" href="home" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="home" class="medium"></iron-icon><span>Home</span></paper-icon-item></a>
-          <a name="carousel" href="carousel" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="image:collections" class="medium"></iron-icon><span>My Carousel</span></paper-icon-item></a>
-          <a name="image-carousel" href="image-carousel" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="image:collections" class="medium"></iron-icon><span>My Image Carousel</span></paper-icon-item></a>
-          <a name="show-git-repositories" href="show-git-repositories" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="av:web-asset" class="medium"></iron-icon><span>Show Git repositories</span></paper-icon-item></a>
-          <a name="view2" href="view2" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="done"></iron-icon><span>View Two</span></paper-icon-item></paper-icon-item></a>
-          <a name="view3" href="view3" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="done"></iron-icon><span>View Three</span></paper-icon-item></a>
-          <a name="new-view" href="new-view" tabindex=-1 ><paper-icon-item role="option" tabindex="0" aria-disable="false"><iron-icon icon="done"></iron-icon><span>New View</span></paper-icon-item></a>
-        </iron-selector>
-      </app-drawer>
+          <app-header slot="header" condenses reveals effects="waterfall">
+            <app-toolbar>
+              <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
+              <div main-title spacer> My Polymer 2 Application </div>
+            </app-toolbar>
+          </app-header>
 
-      <!-- Main content -->
-      <app-header-layout has-scrolling-region>
-
-        <app-header slot="header" condenses reveals effects="waterfall">
-          <app-toolbar>
-            <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title spacer> My Polymer 2 Application </div>
-          </app-toolbar>
-        </app-header>
-
-        <iron-pages
-            selected="[[page]]"
-            attr-for-selected="name"
-            fallback-selection="view404"
-            role="main">
-          <my-home name="home"></my-home>
-
-          <my-carousel name="carousel" title="My Awesome Carousel" int=500 max=12000  appendimage></my-carousel>
-          <my-image-carousel name="image-carousel"  controls int=250 max=1200  label="Awesome Carousel">
-              <img data-src="../images/png/JP2004137757Ap10.png">
-              <img data-src="../images/png/JP2004137757Ap11.png">
-              <img data-src="../images/png/JP2004137757Ap13.png">
-              <img data-src="../images/png/NL1010536C2p13.png">
-              <img data-src="../images/png/NL1010536C2p13.png">
-              <img data-src="../images/png/NL1010536C2p6.png">
-              <img data-src="../images/png/JP2004137757Ap10.png">
-              <img data-src="../images/png/JP2004137757Ap11.png">
-              <img data-src="../images/png/JP2004137757Ap13.png">
-              <img data-src="../images/png/NL1010536C2p13.png">
-              <img data-src="../images/png/NL1010536C2p13.png">
-              <img data-src="../images/png/NL1010536C2p6.png">
-              <img data-src="../images/png/NL1010536C2p10.png">
-              <img data-src="../images/png/NL1010536C2p2.png">
-              <img data-src="../images/png/JP2004137757Ap13.png">
-              <img data-src="../images/png/NL1010536C2p11.png">
-              <img data-src="../images/png/NL1010536C2p3.png">
-              <img data-src="../images/png/JP2004137757Ap1.png">
-              <img data-src="../images/png/NL1010536C2p12.png">
-              <img data-src="../images/png/NL1010536C2p4.png">
-              <img data-src="../images/png/JP2004137757Ap2.png">
-              <img data-src="../images/png/NL1010536C2p13.png">
-              <img data-src="../images/png/NL1010536C2p5.png">
-              <img data-src="../images/png/JP2004137757Ap3.png">
-              <img data-src="../images/png/NL1010536C2p14.png">
-              <img data-src="../images/png/NL1010536C2p6.png">
-              <img data-src="../images/png/JP2004137757Ap4.png">
-              <img data-src="../images/png/NL1010536C2p15.png">
-              <img data-src="../images/png/NL1010536C2p7.png">
-              <img data-src="../images/png/JP2004137757Ap5.png">
-              <img data-src="../images/png/NL1010536C2p16.png">
-              <img data-src="../images/png/NL1010536C2p8.png">
-              <img data-src="../images/png/JP2004137757Ap6.png">
-          </my-image-carousel>
-          <my-show-git-repositories name="show-git-repositories"> user="PaulMatencio"</my-show-git-repositories>
-          <my-view2 name="view2"></my-view2>
-          <my-view3 name="view3"></my-view3>
-          <my-new-view name="new-view"></my-new-view>
-          <my-view404 name="view404"></my-view404>
-        </iron-pages>
-      </app-header-layout>
-    </app-drawer-layout>
+          <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
+            <my-home name="home"></my-home>
+            <my-carousel name="carousel" title="My Awesome Carousel" int=500 max=12000 appendimage></my-carousel>
+            <my-show-git-repositories name="show-git-repositories"> user="PaulMatencio"</my-show-git-repositories>
+            <my-view2 name="view2"></my-view2>
+            <my-view3 name="view3"></my-view3>
+            <my-new-view name="new-view"></my-new-view>
+            <my-view404 name="view404"></my-view404>
+            <my-image-carousel name="image-carousel" controls int=250 max=1200 label="Awesome Carousel">
+              <template is="dom-repeat" items="[[images]]">
+                <img data-src$="[[item]]">
+              </template>
+            <my-image-carousel>
+          </iron-pages>
+        </app-header-layout>
+      </app-drawer-layout>
   </template>
 
   <script>
     class MyApp extends Polymer.Element {
 
-      static get is() { return 'my-app'; }
+      static get is() {
+        return 'my-app';
+      }
 
       static get properties() {
         return {
@@ -216,6 +136,11 @@
           rootPattern: String,
           routeData: Object,
           subroute: String,
+          images: {
+            type: Array,
+            value: getimages(),
+            notify:true
+          }
         };
       }
 
@@ -232,10 +157,9 @@
         this.rootPattern = (new URL(this.rootPath)).pathname;
       }
 
-       ready() {
-         super.ready();
-         console.log("git ready");
-       }
+      ready() {
+        super.ready();
+      }
 
       _routePageChanged(page) {
         // Polymer 2.0 will call with `undefined` on initialization.
@@ -243,11 +167,9 @@
         if (page === undefined) {
           return;
         }
-
         // If no page was found in the route data, page will be an empty string.
         // Deault to 'home' in that case.
         this.page = page || 'home';
-
         // Close a non-persistent drawer when the page & route are changed.
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
@@ -256,21 +178,39 @@
 
       _pageChanged(page) {
         // Load page import on demand. Show 404 page if fails
-
         var resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
-        console.log (resolvedPageUrl);
+        console.log(resolvedPageUrl);
         Polymer.importHref(
-            resolvedPageUrl,
-            null,
-            this._showPage404.bind(this),
-            true);
+          resolvedPageUrl,
+          null,
+          this._showPage404.bind(this),
+          true);
       }
 
       _showPage404() {
         this.page = 'view404';
       }
     }
+
+    var images = ["JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
+          "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png",
+          "NL1010536C2p17.png","NL1010536C2p9.png","JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png",
+          "JP2004137757Ap13.png","JP2004137757Ap1.png","NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png",
+          "NL1010536C2p16.png","NL1010536C2p8.png","NL1010536C2p17.png","NL1010536C2p9.png","JP2004137757Ap10.png",
+          "JP2004137757Ap11.png","JP2004137757Ap12.png","JP2004137757Ap13.png","JP2004137757Ap1.png",
+          "NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png","NL1010536C2p16.png","NL1010536C2p8.png",
+          "NL1010536C2p17.png","NL1010536C2p9.png","JP2004137757Ap10.png","JP2004137757Ap11.png","JP2004137757Ap12.png",
+          "JP2004137757Ap13.png","JP2004137757Ap1.png","NL1010536C2p13.png", "NL1010536C2p5.png","JP2004137757Ap2.png"
+    ];
+
+    function  getimages() {
+      for (var i=0; i< images.length; i++ ) {
+        images[i] = "../images/png/"+images[i];
+      }
+      return images;
+    }
+
     window.customElements.define(MyApp.is, MyApp);
-    console.log(MyApp) ;
+
   </script>
 </dom-module>
